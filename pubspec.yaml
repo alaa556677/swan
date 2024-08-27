@@ -43,9 +43,9 @@ dependencies:
   flutter_screenutil: ^5.6.1
   flutter_bloc: ^8.1.3
   bloc: ^8.1.2
-  dartz: ^0.10.1
-  equatable: ^2.0.5
-  hexcolor: ^3.0.1
+  dartz:
+  equatable:
+  hexcolor:
   conditional_builder_null_safety: ^0.0.6
   easy_localization: ^3.0.7
   provider:
