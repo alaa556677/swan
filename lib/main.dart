@@ -12,6 +12,7 @@ import 'core/network/dio_helper.dart';
 import 'core/styles/theme/light_theme.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/login_screen.dart';
+import 'features/user_data/presentation/cubit/user_cubit.dart';
 import 'locator.dart' as di;
 
 void main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => di.locator<AuthCubit>()),
+        BlocProvider<UserDataCubit>(create: (context) => di.locator<UserDataCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size (360,690),

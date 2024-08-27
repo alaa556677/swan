@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import '../../data/model/login_model.dart';
 
 class LoginEntity extends Equatable{

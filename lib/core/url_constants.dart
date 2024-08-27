@@ -4,4 +4,5 @@ class UrlConstants {
 
 ////////////////////////////////////////////////////////////////////////////////
   static const String loginUrl = '/auth/v1/Login';
+  static const String userData = '/user/v1/GetOneUser2/66ca47e0a7f714757638c4af';
 }
