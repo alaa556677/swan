@@ -5,10 +5,12 @@ import '../app_constatnts/global.dart';
 class ButtonWidget extends StatelessWidget {
   final String title;
   final bool hasBorder;
+  final void Function()? onTap;
 
   const ButtonWidget({super.key,
     required this.title,
     required this.hasBorder,
+    this.onTap
   });
 
   @override
@@ -23,11 +25,12 @@ class ButtonWidget extends StatelessWidget {
                   color: Global.mediumBlue,
                   width: 1.0,
                 )
-              : Border.fromBorderSide(BorderSide.none),
+              : const Border.fromBorderSide(BorderSide.none),
         ),
         child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(10),
-          child: Container(
+          child: SizedBox(
             height: 60.0,
             child: Center(
               child: Text(

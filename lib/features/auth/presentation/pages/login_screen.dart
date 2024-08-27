@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:swan/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 import '../../../../core/app_constatnts/global.dart';
 import '../../../../core/app_constatnts/home_model.dart';
+import '../../../../core/app_constatnts/navigate_methods.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/textfield_widget.dart';
 import '../../../../core/widgets/wave_widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  var formKey = GlobalKey <FormState> ();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +30,24 @@ class LoginScreen extends StatelessWidget {
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     final model = Provider.of<HomeModel>(context);
 
-    return Scaffold(
+    return BlocConsumer <AuthCubit, AuthStates> (
+      listener: (context, state){
+        if(state is LoginSuccess){
+          customShowSnackBar(isError: false, message: "Login Successfully");
+        } else if (state is LoginSuccess){
+          customShowSnackBar(isError: true, message: "Login Error");
+        }
+      },
+      builder: (context, state) => Scaffold(
       backgroundColor: Global.white,
       appBar: PreferredSize(
-        preferredSize: Size.zero,
-        child: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.light,
-            statusBarColor: Global.mediumBlue,
-          ),
-        )
+          preferredSize: Size.zero,
+          child: AppBar(
+            systemOverlayStyle: const SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.light,
+              statusBarColor: Global.mediumBlue,
+            ),
+          )
       ),
       body: Stack(
         children: <Widget>[
@@ -40,12 +61,12 @@ class LoginScreen extends StatelessWidget {
             top: keyboardOpen ? -size.height / 3.7 : 0.0,
             child: WaveWidget(
               size: size,
-              yOffset: size.height / 3.0,
+              yOffset: size.height / 3.5,
               color: Global.white,
             ),
           ),
           const Padding(
-            padding: EdgeInsets.only(top: 100.0),
+            padding: EdgeInsets.only(top: 70.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -61,63 +82,81 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextFieldWidget(
-                  hintText: 'Email',
-                  obscureText: false,
-                  prefixIconData: Icons.mail_outline,
-                  suffixIconData: model.isValid ? Icons.check : null,
-                  onChanged: (value) {
-                    model.isValidEmail(value);
-                  },
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    TextFieldWidget(
-                      hintText: 'Password',
-                      obscureText: model.isVisible ? false : true,
-                      prefixIconData: Icons.lock_outline,
-                      suffixIconData: model.isVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    const Text(
-                      'Forgot password?',
-                      style: TextStyle(
-                        color: Global.mediumBlue,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                const ButtonWidget(
-                  title: 'Login',
-                  hasBorder: false,
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                const ButtonWidget(
-                  title: 'Sign Up',
-                  hasBorder: true,
-                ),
-              ],
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 30.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(height: 24,),
+                  TextFieldWidget(
+                    hintText: 'Email',
+                    controller: emailController,
+                    obscureText: false,
+                    prefixIconData: Icons.mail_outline,
+                    suffixIconData: model.isValid ? Icons.check : null,
+                    onChanged: (value) {
+                      model.isValidEmail(value);
+                    },
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return "required";
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  TextFieldWidget(
+                    hintText: 'Password',
+                    controller: passwordController,
+                    obscureText: model.isVisible ? false : true,
+                    prefixIconData: Icons.lock_outline,
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return "required";
+                      }
+                      return null;
+                    },
+                    suffixIconData: model.isVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  // const SizedBox(
+                  //   height: 10.0,
+                  // ),
+                  // const Text(
+                  //   'Forgot password?',
+                  //   style: TextStyle(
+                  //     color: Global.mediumBlue,
+                  //   ),
+                  // ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  ButtonWidget(
+                    title: 'Login',
+                    hasBorder: false,
+                    onTap: (){
+                      if(formKey.currentState!.validate()){
+                        AuthCubit.instance.loginMethod(emailController.text, passwordController.text);
+                      }
+                    },
+                  ),
+                  // const SizedBox(
+                  //   height: 10.0,
+                  // ),
+                  // const ButtonWidget(
+                  //   title: 'Sign Up',
+                  //   hasBorder: true,
+                  // ),
+                ],
+              ),
             ),
           ),
         ],
       ),
-    );
+    ));
   }
 }
