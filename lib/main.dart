@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
+import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
 import 'core/app_constatnts/bloc_observer.dart';
 import 'core/app_constatnts/home_model.dart';
 import 'core/app_constatnts/routes.dart';
@@ -47,15 +47,14 @@ class MyApp extends StatelessWidget {
               navigatorKey: navigatorKey,
               scaffoldMessengerKey: snackBarKey,
               debugShowCheckedModeBanner: false,
-              // home: const LoginScreen(),
-              // supportedLocales: context.supportedLocales,
-              // localizationsDelegates: context.localizationDelegates,
-              // locale: context.locale,
               onGenerateRoute: (settings){
                 Widget? wid;
                 switch (settings.name) {
                   case Routes.login:
                     wid = const LoginScreen();
+                    break;
+                  case Routes.userDataScreen:
+                    wid = const UserDataScreen();
                     break;
                 }
                 if (wid != null) {

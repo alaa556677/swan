@@ -27,7 +27,7 @@ class UserDataEntityEntity extends Equatable{
   int? roomNumber;
   bool? status;
   List<Tax>? tax;
-  List<Tax>? charging;
+  List<Charging>? charging;
   String? createdAt;
 
   @override

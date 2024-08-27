@@ -31,4 +31,9 @@ class AuthCubit extends Cubit<AuthStates>{
     });
   }
 ////////////////////////////////////////////////////////////////////////////////
+  bool obscureText = true;
+  changeObscureText(){
+    obscureText = !obscureText;
+    emit(ChangeObscureText());
+  }
 }

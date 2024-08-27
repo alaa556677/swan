@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import '../../domain/entity/user_data_entity.dart';
 
 class UserData extends UserDataEntityEntity{
@@ -32,9 +33,9 @@ class UserData extends UserDataEntityEntity{
       });
     }
     if (json['charging'] != null) {
-      charging = <Tax>[];
+      charging = <Charging>[];
       json['charging'].forEach((v) {
-        charging!.add(new Tax.fromJson(v));
+        charging!.add(new Charging.fromJson(v));
       });
     }
     createdAt = json['createdAt'];
@@ -82,6 +83,31 @@ class Tax {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['reason'] = this.reason;
+    data['_id'] = this.sId;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    return data;
+  }
+}
+
+class Charging {
+  int? money;
+  String? sId;
+  String? createdAt;
+  String? updatedAt;
+
+  Charging({this.money, this.sId, this.createdAt, this.updatedAt});
+
+  Charging.fromJson(Map<String, dynamic> json) {
+    money = json['money'];
+    sId = json['_id'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['money'] = this.money;
     data['_id'] = this.sId;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;

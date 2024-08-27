@@ -13,10 +13,10 @@ class CustomTextFormField extends StatelessWidget {
     this.isEnabled,
     this.onFieldSubmitted,
     this.errorState = false,
-    this.focusNode,
     this.fillColor,
     this.isPasswordVisible = false,
     this.suffix,
+    this.prefix,
     this.onPressedSuffix
   });
 
@@ -28,10 +28,10 @@ class CustomTextFormField extends StatelessWidget {
   final Function(String)? onFieldSubmitted;
   final bool? isEnabled;
   final bool? errorState;
-  final FocusNode? focusNode;
   final Color? fillColor;
   final bool isPasswordVisible;
-  final IconData? suffix;
+  final Widget? suffix;
+  final Widget? prefix;
   final void Function()? onPressedSuffix;
 
   @override
@@ -60,18 +60,8 @@ class CustomTextFormField extends StatelessWidget {
             color: Colors.red,
             height: 1
         ),
-        suffixIcon: suffix != null ? Padding(
-          padding: EdgeInsetsDirectional.symmetric(horizontal: 15.w),
-          child: IconButton(
-            onPressed: onPressedSuffix,
-            icon: Icon(isPasswordVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined),
-            iconSize: 20,
-            color: Colors.grey,
-            autofocus: false,
-            focusNode: FocusNode(
-                canRequestFocus: false, descendantsAreFocusable: false),
-          ),
-        ) : const SizedBox.shrink(),
+        suffixIcon: suffix ?? const SizedBox.shrink(),
+        prefixIcon: prefix ?? const SizedBox.shrink(),
         floatingLabelStyle: const TextStyle(fontSize: 18),
         label: Text(
           label,

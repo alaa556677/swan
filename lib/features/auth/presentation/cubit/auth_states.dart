@@ -15,3 +15,4 @@ class LoginSuccess extends AuthStates{
 }
 class LoginError extends AuthStates{}
 ////////////////////////////////////////////////////////////////////////////////
+class ChangeObscureText extends AuthStates{}

@@ -2,13 +2,17 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:swan/core/app_constatnts/routes.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
+import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
 import '../../../../core/app_constatnts/global.dart';
 import '../../../../core/app_constatnts/home_model.dart';
 import '../../../../core/app_constatnts/navigate_methods.dart';
 import '../../../../core/widgets/button_widget.dart';
+import '../../../../core/widgets/deafault_screen.dart';
 import '../../../../core/widgets/textfield_widget.dart';
 import '../../../../core/widgets/wave_widget.dart';
 
@@ -37,23 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
           customShowSnackBar(isError: false, message: "Login Successfully");
           emailController.clear();
           passwordController.clear();
+          navigateToNamed(route: Routes.userDataScreen);
         } else if (state is LoginError){
           emailController.clear();
           passwordController.clear();
           customShowSnackBar(isError: true, message: "Login Error");
         }
       },
-      builder: (context, state) => Scaffold(
-      backgroundColor: Global.white,
-      appBar: PreferredSize(
-          preferredSize: Size.zero,
-          child: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.light,
-              statusBarColor: Global.mediumBlue,
-            ),
-          )
-      ),
+      builder: (context, state) => DefaultScreen(
+      closeAppBar: true,
       body: Stack(
         children: <Widget>[
           Container(
@@ -93,10 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 24,),
+                  const SizedBox(height: 50,),
                   CustomTextFormField(
                     controller: emailController,
-
+                    prefix: const Icon(Icons.email_outlined, color: Colors.grey,),
                     onChange: (value) {
                       model.isValidEmail(value);
                     },
@@ -113,9 +109,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextFormField(
                     label: 'Password',
-                    isPasswordVisible: true,
+                    isPasswordVisible: AuthCubit.instance.obscureText,
                     controller: passwordController,
-                    // obscureText: model.isVisible ? false : true,
+                    prefix: const Icon(Icons.lock_outline, color: Colors.grey,),
+                    suffix: Padding(
+                        padding: EdgeInsetsDirectional.symmetric(horizontal: 0.w),
+                        child: IconButton(
+                          onPressed: (){
+                            AuthCubit.instance.changeObscureText();
+                          },
+                          icon: Icon(AuthCubit.instance.obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                          iconSize: 20,
+                          color: Colors.grey,
+                        ),
+                    ),
                     validator: (value){
                       if(value!.isEmpty){
                         return "required";
