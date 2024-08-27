@@ -1,3 +1,4 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +35,11 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state){
         if(state is LoginSuccess){
           customShowSnackBar(isError: false, message: "Login Successfully");
-        } else if (state is LoginSuccess){
+          emailController.clear();
+          passwordController.clear();
+        } else if (state is LoginError){
+          emailController.clear();
+          passwordController.clear();
           customShowSnackBar(isError: true, message: "Login Error");
         }
       },
@@ -89,13 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   const SizedBox(height: 24,),
-                  TextFieldWidget(
-                    hintText: 'Email',
+                  CustomTextFormField(
                     controller: emailController,
-                    obscureText: false,
-                    prefixIconData: Icons.mail_outline,
-                    suffixIconData: model.isValid ? Icons.check : null,
-                    onChanged: (value) {
+
+                    onChange: (value) {
                       model.isValidEmail(value);
                     },
                     validator: (value){
@@ -104,24 +106,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     },
+                    label: 'Email',
                   ),
                   const SizedBox(
                     height: 10.0,
                   ),
-                  TextFieldWidget(
-                    hintText: 'Password',
+                  CustomTextFormField(
+                    label: 'Password',
+                    isPasswordVisible: true,
                     controller: passwordController,
-                    obscureText: model.isVisible ? false : true,
-                    prefixIconData: Icons.lock_outline,
+                    // obscureText: model.isVisible ? false : true,
                     validator: (value){
                       if(value!.isEmpty){
                         return "required";
                       }
                       return null;
                     },
-                    suffixIconData: model.isVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
                   ),
                   // const SizedBox(
                   //   height: 10.0,
@@ -135,15 +135,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20.0,
                   ),
-                  ButtonWidget(
-                    title: 'Login',
-                    hasBorder: false,
-                    onTap: (){
-                      if(formKey.currentState!.validate()){
-                        AuthCubit.instance.loginMethod(emailController.text, passwordController.text);
-                      }
-                    },
+                  ConditionalBuilder(
+                    condition: state is !LoginLoading,
+                    builder: (context) => ButtonWidget(
+                      title: 'Login',
+                      hasBorder: false,
+                      onTap: (){
+                        if(formKey.currentState!.validate()){
+                          AuthCubit.instance.loginMethod(emailController.text, passwordController.text);
+                        }
+                      },
+                    ),
+                    fallback: (context) => const Center(child: CircularProgressIndicator(),)
                   ),
+
                   // const SizedBox(
                   //   height: 10.0,
                   // ),

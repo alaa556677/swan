@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import 'core/app_constatnts/bloc_observer.dart';
 import 'core/app_constatnts/home_model.dart';
 import 'core/app_constatnts/routes.dart';
 import 'core/network/cache_helper.dart';
@@ -18,6 +19,7 @@ void main() async {
   await CacheHelper.init();
   DioHelper.init();
   di.setup();
+  Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 

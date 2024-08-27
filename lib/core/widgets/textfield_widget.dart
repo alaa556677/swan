@@ -1,71 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:swan/core/app_constatnts/global.dart';
 
-import '../app_constatnts/global.dart';
-import '../app_constatnts/home_model.dart';
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
+    required this.label,
+    required this.controller,
+    super.key,
+    this.validator,
+    this.keyboardType,
+    this.onChange,
+    this.isEnabled,
+    this.onFieldSubmitted,
+    this.errorState = false,
+    this.focusNode,
+    this.fillColor,
+    this.isPasswordVisible = false,
+    this.suffix,
+    this.onPressedSuffix
+  });
 
-class TextFieldWidget extends StatelessWidget {
-  final String hintText;
-  final IconData prefixIconData;
-  final IconData? suffixIconData;
-  final bool obscureText;
-  final dynamic onChanged;
+  final String label;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-
-  const TextFieldWidget({super.key,
-    required this.hintText,
-    required this.prefixIconData,
-    this.suffixIconData,
-    required this.obscureText,
-    this.onChanged,
-    required this.controller,
-    this.validator
-  });
+  final TextInputType? keyboardType;
+  final Function(String)? onChange;
+  final Function(String)? onFieldSubmitted;
+  final bool? isEnabled;
+  final bool? errorState;
+  final FocusNode? focusNode;
+  final Color? fillColor;
+  final bool isPasswordVisible;
+  final IconData? suffix;
+  final void Function()? onPressedSuffix;
 
   @override
   Widget build(BuildContext context) {
-    final model = Provider.of<HomeModel>(context);
-
     return TextFormField(
-      onChanged: onChanged,
-      obscureText: obscureText,
-      cursorColor: Global.mediumBlue,
+      obscureText: isPasswordVisible,
+      onChanged: onChange,
+      onFieldSubmitted: onFieldSubmitted,
       validator: validator,
       controller: controller,
+      keyboardType: keyboardType,
+      enabled: isEnabled,
       style: const TextStyle(
-        color: Global.mediumBlue,
-        fontSize: 14.0,
+        color: Global.mediumBlue
       ),
       decoration: InputDecoration(
-        labelStyle: TextStyle(color: Global.mediumBlue),
-        focusColor: Global.mediumBlue,
+        hintStyle: const TextStyle(
+          color: Colors.grey,
+          fontSize: 14
+        ),
         filled: true,
-        enabledBorder: UnderlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+        contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 24, vertical: 12),
+        helperStyle: TextStyle(height: .3.h,),
+        helperText: "",
+        errorStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+            color: Colors.red,
+            height: 1
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Global.mediumBlue),
-        ),
-        labelText: hintText,
-        prefixIcon: Icon(
-          prefixIconData,
-          size: 18,
-          color: Global.mediumBlue,
-        ),
-        suffixIcon: GestureDetector(
-          onTap: () {
-            model.isVisible = !model.isVisible;
-          },
-          child: Icon(
-            suffixIconData,
-            size: 18,
-            color: Global.mediumBlue,
+        suffixIcon: suffix != null ? Padding(
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 15.w),
+          child: IconButton(
+            onPressed: onPressedSuffix,
+            icon: Icon(isPasswordVisible ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+            iconSize: 20,
+            color: Colors.grey,
+            autofocus: false,
+            focusNode: FocusNode(
+                canRequestFocus: false, descendantsAreFocusable: false),
+          ),
+        ) : const SizedBox.shrink(),
+        floatingLabelStyle: const TextStyle(fontSize: 18),
+        label: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14.sp
           ),
         ),
-      ),
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Colors.grey,
+            )
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: const BorderSide(color:Global.mediumBlue)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: const BorderSide(color: Colors.grey)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: const BorderSide(color: Colors.red)) ,
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.r),
+            borderSide: const BorderSide(color: Colors.red))),
     );
   }
 }

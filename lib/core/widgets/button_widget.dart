@@ -31,7 +31,7 @@ class ButtonWidget extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(10),
           child: SizedBox(
-            height: 60.0,
+            height: 48.0,
             child: Center(
               child: Text(
                 title,

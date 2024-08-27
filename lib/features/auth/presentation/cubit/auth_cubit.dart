@@ -25,6 +25,7 @@ class AuthCubit extends Cubit<AuthStates>{
         userModel = login.data;
         emit(LoginSuccess(login));
       } else {
+
         emit(LoginError());
       }
     });
