@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 import 'package:swan/features/user_data/presentation/cubit/user_states.dart';
 import '../../../../main.dart';
+import '../../data/model/user_data_model.dart';
 import '../../domain/entity/user_data_entity.dart';
 import '../../domain/use_case/user_data_useCase.dart';
 
@@ -17,15 +18,18 @@ class UserDataCubit extends Cubit<UserDataStates>{
 
 ////////////////////////////////////////////////////////////////////////////////
   UserDataEntityEntity? userDataEntityEntity;
+  List <Tax> tax = [];
+  List<Charging> charging = [];
   getUserData () async {
     emit(GetUserDataLoading());
     final result = await userDataUseCase.call();
     result.fold((failure) => emit(GetUserDataFailure(failure.errorMessage)), (userData) {
       if (userData != null) {
         userDataEntityEntity = userData;
+        tax = userData.tax!;
+        charging = userData.charging!;
         emit(GetUserDataSuccess(userData));
       } else {
-
         emit(GetUserDataError());
       }
     });

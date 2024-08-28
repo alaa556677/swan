@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           customShowSnackBar(isError: false, message: "Login Successfully");
           emailController.clear();
           passwordController.clear();
-          navigateToNamed(route: Routes.userDataScreen);
+          // navigateToNamed(route: Routes.userDataScreen);
         } else if (state is LoginError){
           emailController.clear();
           passwordController.clear();

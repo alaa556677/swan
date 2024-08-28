@@ -18,8 +18,8 @@ class UserDataEntityEntity extends Equatable{
     this.createdAt,
   });
 
-  String? userName;
-  String? email;
+  dynamic userName;
+  dynamic email;
   int? consumption;
   int? flowRate;
   int? limit;
@@ -28,7 +28,7 @@ class UserDataEntityEntity extends Equatable{
   bool? status;
   List<Tax>? tax;
   List<Charging>? charging;
-  String? createdAt;
+  dynamic createdAt;
 
   @override
   List<Object?> get props => [userName , email, consumption, flowRate, limit, mobile, roomNumber, status, tax, charging, createdAt];

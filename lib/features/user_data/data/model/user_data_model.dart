@@ -64,10 +64,10 @@ class UserData extends UserDataEntityEntity{
 
 class Tax {
   int? value;
-  String? reason;
-  String? sId;
-  String? createdAt;
-  String? updatedAt;
+  dynamic reason;
+  dynamic sId;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Tax({this.value, this.reason, this.sId, this.createdAt, this.updatedAt});
 
@@ -92,9 +92,9 @@ class Tax {
 
 class Charging {
   int? money;
-  String? sId;
-  String? createdAt;
-  String? updatedAt;
+  dynamic sId;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Charging({this.money, this.sId, this.createdAt, this.updatedAt});
 
