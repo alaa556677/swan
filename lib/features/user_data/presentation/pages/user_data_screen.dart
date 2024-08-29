@@ -23,6 +23,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
   @override
   void initState() {
     UserDataCubit.instance.getUserData();
+    UserDataCubit.instance.getSettings();
     super.initState();
   }
 
@@ -117,8 +118,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
                             SizedBox(width: 8.w,),
                             Expanded(
                               child: ButtonWidget(
-                                title: 'Google',
-                                pathImage: "assets/images/signin_google.svg",
+                                title: 'Whats',
+                                pathImage: "assets/images/whats.svg",
                                 hasBorder: true,
                                 onTap: (){},
                               ),
@@ -126,15 +127,16 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           ],
                         ),
                         SizedBox(height: 12.h,),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) => UserDataCard(
-                            userDataEntityEntity: UserDataCubit.instance.userDataEntityEntity!,
-                            tax: UserDataCubit.instance.tax[index],
-                          ),
-                          itemCount: UserDataCubit.instance.tax.length,
-                        )
+
+                        // ListView.builder(
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   shrinkWrap: true,
+                        //   itemBuilder: (context, index) => UserDataCard(
+                        //     userDataEntityEntity: UserDataCubit.instance.userDataEntityEntity!,
+                        //     tax: UserDataCubit.instance.tax[index],
+                        //   ),
+                        //   itemCount: UserDataCubit.instance.tax.length,
+                        // )
                       ],
                     ),
                   ),

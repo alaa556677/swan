@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swan/core/app_constatnts/enum_constants.dart';
+import 'package:swan/core/network/cache_helper.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 
+import '../../../../core/network/dio_helper.dart';
 import '../../../../main.dart';
 import '../../data/model/login_model.dart';
 import '../../domain/entity/login_entity.dart';
@@ -23,9 +26,10 @@ class AuthCubit extends Cubit<AuthStates>{
     result.fold((failure) => emit(LoginFailure(failure.errorMessage)), (login) {
       if (login.role == 'authenticated') {
         userModel = login.data;
+        CacheHelper.saveData(key: Constants.token.toString(), value: login.data?.token);
+        DioHelper.init();
         emit(LoginSuccess(login));
       } else {
-
         emit(LoginError());
       }
     });

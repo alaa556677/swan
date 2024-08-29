@@ -8,8 +8,8 @@ class ItemForCard extends StatelessWidget{
   final String? titleData;
   final TextDecoration? decoration;
   final Color color;
-  final double width;
-  const ItemForCard({super.key, required this.text, required this.titleData, this.decoration, this.color = Colors.black, this.width = 80});
+  final double? width;
+  const ItemForCard({super.key, required this.text, required this.titleData, this.decoration, this.color = Colors.black, this.width});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,11 +17,11 @@ class ItemForCard extends StatelessWidget{
       child: Row(
         children: [
           SizedBox(
-            width: width,
+            width: width ?? 120.w,
             child: TextWidget(
               text : text,
               textStyle: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 15.sp,
                 color: Colors.black
               )
             ),
@@ -33,7 +33,7 @@ class ItemForCard extends StatelessWidget{
               textOverflow: TextOverflow.ellipsis,
               textStyle: TextStyle(
                 color: Colors.grey,
-                fontSize: 14.sp
+                fontSize: 15.sp
               )
             ),
           ),

@@ -1,3 +1,4 @@
+import '../../domain/entity/settings_entity.dart';
 import '../../domain/entity/user_data_entity.dart';
 
 abstract class UserDataStates{}
@@ -15,3 +16,13 @@ class GetUserDataSuccess extends UserDataStates{
 }
 class GetUserDataError extends UserDataStates{}
 ////////////////////////////////////////////////////////////////////////////////
+class GetSettingsLoading extends UserDataStates{}
+class GetSettingsFailure extends UserDataStates{
+  String message;
+  GetSettingsFailure(this.message);
+}
+class GetSettingsSuccess extends UserDataStates{
+  SettingsEntity settingsEntity;
+  GetSettingsSuccess(this.settingsEntity);
+}
+class GetSettingsError extends UserDataStates{}

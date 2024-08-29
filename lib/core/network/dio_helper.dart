@@ -41,7 +41,7 @@ class DioHelper {
     options.receiveTimeout = const Duration(seconds: 20 ); //20 sec
     options.baseUrl = UrlConstants.baseurl;
     options.headers = {
-      'Authorization': "Bearer ${CacheHelper.getData(key: Constants.token.toString())}",
+      'access_token': "${CacheHelper.getData(key: Constants.token.toString())}",
     };
     options.queryParameters = {};
     return options;
