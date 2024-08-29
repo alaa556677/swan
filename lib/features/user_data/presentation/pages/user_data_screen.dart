@@ -127,16 +127,15 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           ],
                         ),
                         SizedBox(height: 12.h,),
-
-                        // ListView.builder(
-                        //   physics: const NeverScrollableScrollPhysics(),
-                        //   shrinkWrap: true,
-                        //   itemBuilder: (context, index) => UserDataCard(
-                        //     userDataEntityEntity: UserDataCubit.instance.userDataEntityEntity!,
-                        //     tax: UserDataCubit.instance.tax[index],
-                        //   ),
-                        //   itemCount: UserDataCubit.instance.tax.length,
-                        // )
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => UserDataCard(
+                            userDataEntityEntity: UserDataCubit.instance.userDataEntityEntity!,
+                            tax: UserDataCubit.instance.tax[index],
+                          ),
+                          itemCount: UserDataCubit.instance.tax.length,
+                        )
                       ],
                     ),
                   ),
