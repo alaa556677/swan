@@ -11,7 +11,7 @@ class GetUserDataFailure extends UserDataStates{
   GetUserDataFailure(this.message);
 }
 class GetUserDataSuccess extends UserDataStates{
-  UserDataEntityEntity  userDataEntityEntity;
+  UserDataEntity  userDataEntityEntity;
   GetUserDataSuccess(this.userDataEntityEntity);
 }
 class GetUserDataError extends UserDataStates{}

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:swan/core/app_constatnts/global.dart';
+import 'package:swan/core/app_constatnts/navigate_methods.dart';
+import 'package:swan/core/app_constatnts/routes.dart';
 import 'package:swan/core/widgets/deafault_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/widgets/user_data_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_constatnts/home_model.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/wave_widget.dart';
@@ -31,7 +35,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    final model = Provider.of<HomeModel>(context);
     return BlocConsumer<UserDataCubit, UserDataStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -81,7 +84,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   ),
                 ],
               ),
-              state is GetUserDataLoading ? const Center(child: CircularProgressIndicator(),): Expanded(
+              state is GetUserDataLoading || state is GetSettingsLoading? const Center(child: CircularProgressIndicator(),): Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
@@ -103,7 +106,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 title: 'Face',
                                 pathImage: "assets/images/signin_facebook.svg",
                                 hasBorder: true,
-                                onTap: (){},
+                                onTap: (){
+                                  launchURL(UserDataCubit.instance.settingsEntity!.facebook!);
+                                },
                               ),
                             ),
                             SizedBox(width: 8.w,),
@@ -112,7 +117,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 title: 'Insta',
                                 pathImage: "assets/images/insta.svg",
                                 hasBorder: true,
-                                onTap: (){},
+                                onTap: (){
+                                  launchURL(UserDataCubit.instance.settingsEntity!.instagram!);
+                                },
                               ),
                             ),
                             SizedBox(width: 8.w,),
@@ -121,21 +128,67 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 title: 'Whats',
                                 pathImage: "assets/images/whats.svg",
                                 hasBorder: true,
-                                onTap: (){},
+                                onTap: (){
+                                  launchURL(UserDataCubit.instance.settingsEntity!.whatsAppLink!);
+                                },
                               ),
                             )
                           ],
                         ),
-                        SizedBox(height: 12.h,),
+                        SizedBox(height: 18.h,),
                         ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => UserDataCard(
-                            userDataEntityEntity: UserDataCubit.instance.userDataEntityEntity!,
+                            userDataEntityEntity: UserDataCubit.instance.userDataEntity!,
                             tax: UserDataCubit.instance.tax[index],
                           ),
                           itemCount: UserDataCubit.instance.tax.length,
-                        )
+                        ),
+                        SizedBox(height: 18.h,),
+                        Text(
+                          "Consumption",
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularStepProgressIndicator(
+                              totalSteps: UserDataCubit.instance.userDataEntity?.limit ?? 100,
+                              currentStep: UserDataCubit.instance.userDataEntity?.consumption ?? 0,
+                              stepSize: 12,
+                              selectedColor: Global.mediumBlue,
+                              unselectedColor: Colors.grey,
+                              padding: 0,
+                              width: 140.h,
+                              height: 140.h,
+                              selectedStepSize: 12,
+                              roundedCap: (_, __) => true,
+                              child: Center(
+                                child: Text(
+                                  "% ${UserDataCubit.instance.userDataEntity?.consumption ?? 0}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontFamily: "DXRound",
+                                      fontWeight: FontWeight.w800,
+                                      color: Global.mediumBlue,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 18.h,),
+                        ButtonWidget(
+                          title: 'Charts',
+                          hasBorder: false,
+                          onTap: (){
+                            navigateToNamed(route: Routes.chartsScreen);
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -146,5 +199,13 @@ class _UserDataScreenState extends State<UserDataScreen> {
         );
       },
     );
+  }
+
+  void launchURL(String urlPath) async {
+    if (await canLaunchUrl(Uri.parse(urlPath))) {
+      await launchUrl(Uri.parse(urlPath));
+    } else {
+      throw 'Could not launch $urlPath';
+    }
   }
 }

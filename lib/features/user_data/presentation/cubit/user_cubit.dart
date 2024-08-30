@@ -21,7 +21,7 @@ class UserDataCubit extends Cubit<UserDataStates>{
   static UserDataCubit get instance => _userDataCubit;
 
 ////////////////////////////////////////////////////////////////////////////////
-  UserDataEntityEntity? userDataEntityEntity;
+  UserDataEntity? userDataEntity;
   List <Tax> tax = [];
   List<Charging> charging = [];
   getUserData () async {
@@ -29,7 +29,7 @@ class UserDataCubit extends Cubit<UserDataStates>{
     final result = await userDataUseCase.call();
     result.fold((failure) => emit(GetUserDataFailure(failure.errorMessage)), (userData) {
       if (userData != null) {
-        userDataEntityEntity = userData;
+        userDataEntity = userData;
         tax = userData.tax!;
         charging = userData.charging!;
         emit(GetUserDataSuccess(userData));

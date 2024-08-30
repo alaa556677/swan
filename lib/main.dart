@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:swan/features/user_data/presentation/pages/charts_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
 import 'core/app_constatnts/bloc_observer.dart';
 import 'core/app_constatnts/home_model.dart';
@@ -56,14 +57,17 @@ class MyApp extends StatelessWidget {
                   case Routes.userDataScreen:
                     wid = const UserDataScreen();
                     break;
+                  case Routes.chartsScreen:
+                    wid = const ChartsScreen();
+                    break;
                 }
                 if (wid != null) {
                   return PageRouteBuilder(
-                      settings: settings,
-                      // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                      pageBuilder: (_, __, ___) => wid!,
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c));
+                    settings: settings,
+                    // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                    pageBuilder: (_, __, ___) => wid!,
+                    transitionsBuilder: (_, a, __, c) =>
+                      FadeTransition(opacity: a, child: c));
                 }
                 return null;
               },

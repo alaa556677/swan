@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/entity/user_data_entity.dart';
 
-class UserData extends UserDataEntityEntity{
+class UserData extends UserDataEntity{
 
   UserData({
     super.userName,

@@ -6,7 +6,7 @@ import '../../../domain/entity/user_data_entity.dart';
 import 'item_card.dart';
 
 class UserDataCard extends StatefulWidget{
-  final UserDataEntityEntity userDataEntityEntity;
+  final UserDataEntity userDataEntityEntity;
   final Tax tax;
   const UserDataCard({super.key, required this.userDataEntityEntity, required this.tax});
 

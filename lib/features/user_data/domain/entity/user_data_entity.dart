@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../data/model/user_data_model.dart';
 
-class UserDataEntityEntity extends Equatable{
-  UserDataEntityEntity({
+class UserDataEntity extends Equatable{
+  UserDataEntity({
     this.userName,
     this.email,
     this.consumption,
