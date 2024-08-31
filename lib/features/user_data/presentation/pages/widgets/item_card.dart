@@ -6,38 +6,50 @@ import '../../../../../core/widgets/text_widget.dart';
 class ItemForCard extends StatelessWidget{
   final String text;
   final String? titleData;
-  final TextDecoration? decoration;
-  final Color color;
-  final double? width;
-  const ItemForCard({super.key, required this.text, required this.titleData, this.decoration, this.color = Colors.black, this.width});
+  final IconData? leadingIcon;
+  final IconData? trailingIcon;
+
+  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon, this.trailingIcon});
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.symmetric(vertical: 2.h),
-      child: Row(
-        children: [
-          SizedBox(
-            width: width ?? 120.w,
-            child: TextWidget(
-              text : text,
-              textStyle: TextStyle(
-                fontSize: 15.sp,
-                color: Colors.black
-              )
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFE6E6E6),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey, width: .5.w),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(.16),
+            offset: const Offset(0,0),
+            blurRadius: 12
+          )
+        ]
+      ),
+      child: ListTile(
+        leading: Icon(leadingIcon),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextWidget(
+                text : text,
+                textStyle: TextStyle(
+                    fontSize: 15.sp,
+                    color: Colors.black
+                )
             ),
-          ),
-          Expanded(
-            child: TextWidget(
-              text : titleData ?? "",
-              maxLines: 1,
-              textOverflow: TextOverflow.ellipsis,
-              textStyle: TextStyle(
-                color: Colors.grey,
-                fontSize: 15.sp
-              )
+            TextWidget(
+                text : titleData ?? "",
+                maxLines: 1,
+                textOverflow: TextOverflow.ellipsis,
+                textStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 15.sp
+                )
             ),
-          ),
-        ],
+          ],
+        ),
+        trailing: Icon(trailingIcon),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
       ),
     );
   }

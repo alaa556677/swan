@@ -33,26 +33,6 @@ class _UserDataCardState extends State<UserDataCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ItemForCard(
-            text: 'User Name',
-            titleData: widget.userDataEntityEntity.userName ?? "",
-          ),
-          ItemForCard(
-            text: 'Email',
-            titleData: widget.userDataEntityEntity.email ?? "",
-          ),
-          ItemForCard(
-            text: 'Limit',
-            titleData: widget.userDataEntityEntity.limit != null ? widget.userDataEntityEntity.limit.toString() : "",
-          ),
-          ItemForCard(
-            text: 'Mobile Number',
-            titleData: widget.userDataEntityEntity.mobile != null ? widget.userDataEntityEntity.mobile.toString() : "",
-          ),
-          ItemForCard(
-            text: 'Room Number',
-            titleData: widget.userDataEntityEntity.roomNumber != null ? widget.userDataEntityEntity.roomNumber.toString() : "",
-          ),
-          ItemForCard(
             text: 'Tax',
             titleData: widget.tax.value != null ? widget.tax.value.toString() : "",
           ),
