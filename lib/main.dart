@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:swan/core/app_constatnts/enum_constants.dart';
+import 'package:swan/features/user_data/presentation/cubit/user_states.dart';
 import 'package:swan/features/user_data/presentation/pages/charts_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
 import 'core/app_constatnts/bloc_observer.dart';
@@ -11,6 +12,7 @@ import 'core/app_constatnts/home_model.dart';
 import 'core/app_constatnts/routes.dart';
 import 'core/network/cache_helper.dart';
 import 'core/network/dio_helper.dart';
+import 'core/styles/theme/change_notifier.dart';
 import 'core/styles/theme/dark_theme.dart';
 import 'core/styles/theme/light_theme.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
@@ -25,16 +27,30 @@ void main() async {
   CacheHelper.saveData(key: Constants.darkMode.toString(), value: false);
   di.setup();
   Bloc.observer = MyBlocObserver();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (_) => ThemeNotifier(),
+    child: const MyApp())
+  );
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<ScaffoldMessengerState> snackBarKey = GlobalKey<ScaffoldMessengerState>();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(create: (context) => di.locator<AuthCubit>()),
@@ -66,19 +82,21 @@ class MyApp extends StatelessWidget {
                 }
                 if (wid != null) {
                   return PageRouteBuilder(
-                    settings: settings,
-                    // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                    pageBuilder: (_, __, ___) => wid!,
-                    transitionsBuilder: (_, a, __, c) =>
-                      FadeTransition(opacity: a, child: c));
+                      settings: settings,
+                      // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                      pageBuilder: (_, __, ___) => wid!,
+                      transitionsBuilder: (_, a, __, c) =>
+                          FadeTransition(opacity: a, child: c));
                 }
                 return null;
               },
               navigatorObservers: [RouteObserver<PageRoute>()],
-              initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
-              theme: CacheHelper.getData(key: Constants.darkMode.toString()) == true ? dark : light,
-              themeMode: CacheHelper.getData(key: Constants.darkMode.toString()) == true ? ThemeMode.dark : ThemeMode.light,
-            )
+              // initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
+              initialRoute: Routes.login,
+              theme: light,
+              darkTheme: dark,
+              themeMode: themeNotifier.currentTheme,
+            ),
           );
         },
       ),

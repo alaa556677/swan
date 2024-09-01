@@ -8,12 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mrx_charts/mrx_charts.dart';
+import 'package:provider/provider.dart';
+import 'package:swan/main.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import '../../../../core/app_constatnts/global.dart';
+import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/deafault_screen.dart';
 import '../../../../core/widgets/wave_widget.dart';
 import '../cubit/user_cubit.dart';
@@ -25,6 +28,7 @@ class ChartsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return BlocConsumer<UserDataCubit, UserDataStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -36,7 +40,7 @@ class ChartsScreen extends StatelessWidget {
                 children: [
                   Container(
                     height: size.height * .18,
-                    color: Global.mediumBlueLight,
+                    color: Theme.of(context).primaryColor,
                   ),
                   AnimatedPositioned(
                     duration: const Duration(milliseconds: 500),
@@ -45,7 +49,7 @@ class ChartsScreen extends StatelessWidget {
                     child: WaveWidget(
                       size: size,
                       yOffset: size.height / 8,
-                      color: Global.white,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
                   ),
                   Padding(
@@ -56,7 +60,7 @@ class ChartsScreen extends StatelessWidget {
                         const Text(
                           'Charts',
                           style: TextStyle(
-                            color: Global.white,
+                            color: Global.whiteColor,
                             fontSize: 28.0,
                             fontWeight: FontWeight.w900,
                           ),
@@ -64,9 +68,13 @@ class ChartsScreen extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.brightness_4_outlined, color: Colors.white,),
+                            InkWell(
+                                onTap: (){
+                                  themeNotifier.toggleTheme();
+                                },
+                                child: Icon(Icons.brightness_4_outlined, color: Theme.of(context).iconTheme.color,)),
                             SizedBox(width: 12.w,),
-                            const Icon(Icons.language, color: Colors.white,)
+                            Icon(Icons.language, color: Theme.of(context).iconTheme.color,)
                           ],
                         )
                       ],
@@ -78,33 +86,41 @@ class ChartsScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
                   child: SfCartesianChart(
-                      title: ChartTitle(
-                          text: 'Money charging',
-                          backgroundColor: Colors.white,
-                          textStyle: const TextStyle(fontSize: 12),
-                          alignment: ChartAlignment.center),
-                      plotAreaBorderWidth: 0,
-                      primaryXAxis: CategoryAxis(
-                        axisLine: const AxisLine(width: 0),
-                        majorGridLines: const MajorGridLines(width: 0),
+                    title: ChartTitle(
+                      text: 'Money charging',
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      textStyle: Theme.of(context).textTheme.titleSmall,
+                      alignment: ChartAlignment.center
+                    ),
+                    plotAreaBorderWidth: 0,
+                    primaryXAxis: CategoryAxis(
+                      axisLine: const AxisLine(width: 0),
+                      majorGridLines: const MajorGridLines(width: 0),
+                      labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: 12.sp
                       ),
-                      primaryYAxis: NumericAxis(
-                        minimum: 0,
-                        maximum: UserDataCubit.instance.maxNumber(),
-                        interval: UserDataCubit.instance.maxNumber() / 2,
-                        axisLine: const AxisLine(width: 0),
-                        majorGridLines: const MajorGridLines(width: 0),
+                    ),
+                    primaryYAxis: NumericAxis(
+                      minimum: 0,
+                      maximum: UserDataCubit.instance.maxNumber(),
+                      interval: UserDataCubit.instance.maxNumber() / 2,
+                      axisLine: const AxisLine(width: 0),
+                      labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 12.sp
                       ),
-                      tooltipBehavior: TooltipBehavior(enable: true),
-                      series: <ColumnSeries<SalesData, String>>[
-                        ColumnSeries<SalesData, String>(
-                          dataSource: data,
-                          pointColorMapper: (SalesData data, _) => data.color,
-                          animationDuration: 2000,
-                          xValueMapper: (SalesData data, _) => data.day,
-                          yValueMapper: (SalesData data, _) => data.money,
-                        )
-                      ]),
+                      majorGridLines: const MajorGridLines(width: 0),
+                    ),
+                    tooltipBehavior: TooltipBehavior(enable: true),
+                    series: <ColumnSeries<SalesData, String>>[
+                      ColumnSeries<SalesData, String>(
+                        dataSource: data,
+                        pointColorMapper: (SalesData data, _) => data.color,
+                        animationDuration: 2000,
+                        xValueMapper: (SalesData data, _) => data.day,
+                        yValueMapper: (SalesData data, _) => data.money,
+                      )
+                    ]
+                  ),
                 ),
               )
             ],
@@ -117,7 +133,7 @@ class ChartsScreen extends StatelessWidget {
   List<SalesData> data = UserDataCubit.instance.charging.map((e) => SalesData(
     e.createdAt.toString().substring(14,19),
     e.money!.toDouble(),
-    color : e.money == UserDataCubit.instance.maxNumber() ? Global.mediumBlueLight : Colors.blueAccent.withOpacity(.2),
+    color : e.money == UserDataCubit.instance.maxNumber() ? Global.buttonColor : Global.unSelectedColor,
   )).toList();
 }
 

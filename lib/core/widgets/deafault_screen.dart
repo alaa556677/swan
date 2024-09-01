@@ -9,13 +9,11 @@ class DefaultScreen extends StatelessWidget {
     this.closeAppBar = false,
     this.appbar,
     required this.body,
-    this.backgroundColor = Global.white,
   });
 
   final bool closeAppBar;
   final  PreferredSizeWidget? appbar;
   final Widget body;
-  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +22,9 @@ class DefaultScreen extends StatelessWidget {
       appBar: closeAppBar ? PreferredSize(
           preferredSize: Size.zero,
           child: AppBar(
-            systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.light,
-              statusBarColor: Global.mediumBlueLight,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarIconBrightness,
+              statusBarColor: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarColor,
             ),
           )
       ) : appbar,

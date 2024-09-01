@@ -6,14 +6,12 @@ import '../app_constatnts/global.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String title;
-  final bool hasBorder;
   final void Function()? onTap;
   final double width;
   final String? pathImage;
 
   const ButtonWidget({super.key,
     required this.title,
-    required this.hasBorder,
     this.onTap,
     this.width = double.infinity,
     this.pathImage
@@ -21,42 +19,31 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Ink(
-        decoration: BoxDecoration(
-          color: hasBorder ? Global.white : Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(10),
-          border: hasBorder
-              ? Border.all(
-                  color: Theme.of(context).primaryColor,
-                  width: 1.0,
-                )
-              : const Border.fromBorderSide(BorderSide.none),
-        ),
-        child: SizedBox(
-          height: 48.0,
-          width: width,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if(pathImage != null)...[
-                  SvgPicture.asset(pathImage!),
-                  SizedBox(width: 6.w,),
-                ],
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: hasBorder ? Theme.of(context).primaryColor : Global.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ],
+    return Container(
+      width: width,
+      height: 48.h,
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if(pathImage != null)...[
+              SvgPicture.asset(pathImage!),
+              SizedBox(width: 6.w,),
+            ],
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: Colors.white,
+                  fontSize: 16.sp
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

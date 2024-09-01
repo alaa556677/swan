@@ -2,9 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Global {
-  static const Color white = Color(0xffffffff);
-  static const Color mediumBlueLight = Color(0xff4A64FE);
-  static const Color mediumBlueDark = Color(0xff18212f);
-  static const Color scaffoldBackgroundDark = Color(0xff111827);
+  static const Color whiteColor = Color(0xffffffff);
+  static const Color blackColor = Color(0xff000000);
+  static Color unSelectedColor = Colors.blueAccent.withOpacity(.2);
+  static const Color greyColor = Colors.grey;
+  static const Color bodyColorLight = Color(0xffffffff);
+  static const Color bodyColorDark = Color(0xff18212f);
+  static const Color buttonColor = Color(0xff4f46e5);
+  static const Color cardDataColorLight = Color(0xfff3f4f6);
+  static const Color cardDataColorDark = Color(0xff111827);
   static const List validEmail = ['test@gmail.com'];
 }

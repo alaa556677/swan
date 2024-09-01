@@ -85,6 +85,12 @@ class UserDataCubit extends Cubit<UserDataStates>{
       }
     });
   }
+////////////////////////////////////////////////////////////////////////////////
+//   bool isDark = false;
+//   void changeAppMode (){
+//     isDark = !isDark;
+//     emit(ChangeAppMode());
+//   }
 }
 
 class SalesData {

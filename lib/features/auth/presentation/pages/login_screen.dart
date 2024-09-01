@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           customShowSnackBar(isError: false, message: "Login Successfully");
           emailController.clear();
           passwordController.clear();
-          navigateToNamed(route: Routes.userDataScreen);
+          navigateToAndRemoveNamed(route: Routes.userDataScreen);
         } else if (state is LoginError){
           emailController.clear();
           passwordController.clear();
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: WaveWidget(
               size: size,
               yOffset: size.height / 3.5,
-              color: Global.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
           ),
           const Padding(
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   'Login',
                   style: TextStyle(
-                    color: Global.white,
+                    color: Global.whiteColor,
                     fontSize: 40.0,
                     fontWeight: FontWeight.w900,
                   ),
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const SizedBox(height: 50,),
+                  SizedBox(height: 80.h,),
                   CustomTextFormField(
                     controller: emailController,
                     prefix: const Icon(Icons.email_outlined, color: Colors.grey,),
@@ -104,9 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     label: 'Email',
                   ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
+                  SizedBox(height: 10.h),
                   CustomTextFormField(
                     label: 'Password',
                     isPasswordVisible: AuthCubit.instance.obscureText,
@@ -146,7 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     condition: state is !LoginLoading,
                     builder: (context) => ButtonWidget(
                       title: 'Login',
-                      hasBorder: false,
                       onTap: (){
                         if(formKey.currentState!.validate()){
                           AuthCubit.instance.loginMethod(emailController.text, passwordController.text);

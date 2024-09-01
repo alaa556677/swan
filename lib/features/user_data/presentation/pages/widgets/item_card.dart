@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:swan/core/app_constatnts/global.dart';
 
 import '../../../../../core/widgets/text_widget.dart';
 
@@ -14,31 +15,26 @@ class ItemForCard extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white54,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey, width: .5.w),
-
       ),
       child: ListTile(
-        leading: Icon(leadingIcon),
+        leading: Icon(leadingIcon, color: Theme.of(context).iconTheme.color,),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextWidget(
-                text : text,
-                textStyle: TextStyle(
-                    fontSize: 15.sp,
-                    color: Colors.black
-                )
+              text : text,
+              textStyle: Theme.of(context).textTheme.titleSmall
             ),
             TextWidget(
-                text : titleData ?? "",
-                maxLines: 1,
-                textOverflow: TextOverflow.ellipsis,
-                textStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 15.sp
-                )
+              text : titleData ?? "",
+              maxLines: 1,
+              textOverflow: TextOverflow.ellipsis,
+              textStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                color: Global.greyColor
+              )
             ),
           ],
         ),

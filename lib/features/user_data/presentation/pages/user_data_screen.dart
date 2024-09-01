@@ -14,6 +14,7 @@ import 'package:swan/features/user_data/presentation/pages/widgets/item_card.dar
 import 'package:swan/features/user_data/presentation/pages/widgets/user_data_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_constatnts/home_model.dart';
+import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/button_widget.dart';
 import '../../../../core/widgets/wave_widget.dart';
 import '../cubit/user_cubit.dart';
@@ -39,6 +40,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return BlocConsumer<UserDataCubit, UserDataStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -50,7 +52,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                 children: [
                   Container(
                     height: size.height * .18,
-                    color: Global.mediumBlueLight,
+                    color: Theme.of(context).primaryColor,
                   ),
                   AnimatedPositioned(
                     duration: const Duration(milliseconds: 500),
@@ -59,7 +61,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                     child: WaveWidget(
                       size: size,
                       yOffset: size.height / 8,
-                      color: Global.white,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                     ),
                   ),
                   Padding(
@@ -70,7 +72,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                         const Text(
                           'Home',
                           style: TextStyle(
-                            color: Global.white,
+                            color: Global.whiteColor,
                             fontSize: 28.0,
                             fontWeight: FontWeight.w900,
                           ),
@@ -80,13 +82,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           children: [
                             InkWell(
                               onTap: (){
-                                setState(() {
-                                  if(CacheHelper.getData(key: Constants.darkMode.toString()) == true){
-                                    CacheHelper.saveData(key: Constants.darkMode.toString(), value: false);
-                                  }else{
-                                    CacheHelper.saveData(key: Constants.darkMode.toString(), value: true);
-                                  }
-                                });
+                                themeNotifier.toggleTheme();
                               },
                               child: Icon(Icons.brightness_4_outlined, color: Theme.of(context).iconTheme.color,)),
                             SizedBox(width: 12.w,),
@@ -113,6 +109,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               InputDecorator(
                                 decoration: InputDecoration(
                                   labelText: "User",
+                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    color: Global.greyColor
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
                                     borderRadius: BorderRadius.circular(10.0),
@@ -180,6 +179,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               InputDecorator(
                                 decoration: InputDecoration(
                                   labelText: "Flow Rate",
+                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                      color: Global.greyColor
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
                                     borderRadius: BorderRadius.circular(10.0),
@@ -197,18 +199,18 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                       axis: GaugeAxis(
                                           min: 0,
                                           max: 1000,
-                                          style: const GaugeAxisStyle(
+                                          style: GaugeAxisStyle(
                                             thickness: 12,
-                                            background: Global.mediumBlueLight,
+                                            background: Theme.of(context).primaryColor,
                                             segmentSpacing: 4,
                                           ),
                                           pointer: GaugePointer.needle(
-                                              width: 20,
-                                              height: 60,
-                                              color: Colors.black.withOpacity(.90)
+                                            width: 20,
+                                            height: 60,
+                                            color: Theme.of(context).indicatorColor,
                                           ),
-                                          progressBar: const GaugeProgressBar.rounded(
-                                            color: Global.mediumBlueLight,
+                                          progressBar: GaugeProgressBar.rounded(
+                                            color: Theme.of(context).primaryColor,
                                           ),
                                           segments: const [
                                             GaugeSegment(
@@ -245,6 +247,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               InputDecorator(
                                 decoration: InputDecoration(
                                   labelText: "Consumption",
+                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                      color: Global.greyColor
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
                                     borderRadius: BorderRadius.circular(10.0),
@@ -257,8 +262,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                       totalSteps: UserDataCubit.instance.userDataEntity?.limit ?? 100,
                                       currentStep: UserDataCubit.instance.userDataEntity?.consumption ?? 0,
                                       stepSize: 12,
-                                      selectedColor: Global.mediumBlueLight,
-                                      unselectedColor: Colors.blueAccent.withOpacity(.2),
+                                      selectedColor: Theme.of(context).primaryColor,
+                                      unselectedColor: Theme.of(context).disabledColor,
                                       padding: 0,
                                       width: 140.h,
                                       height: 140.h,
@@ -268,12 +273,10 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                         child: Text(
                                           "% ${UserDataCubit.instance.userDataEntity?.consumption ?? 0}",
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            fontSize: 24,
-                                            fontFamily: "DXRound",
+                                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                                            fontSize: 24.sp,
                                             fontWeight: FontWeight.w800,
-                                            color: Global.mediumBlueLight,
-                                          ),
+                                          )
                                         ),
                                       ),
                                     ),
@@ -283,7 +286,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               SizedBox(height: 18.h,),
                               ButtonWidget(
                                 title: 'Charts',
-                                hasBorder: false,
                                 onTap: (){
                                   navigateToNamed(route: Routes.chartsScreen);
                                 },
@@ -305,7 +307,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       child: ButtonWidget(
                         title: 'Face',
                         pathImage: "assets/images/signin_facebook.svg",
-                        hasBorder: true,
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.facebook!);
                         },
@@ -316,7 +317,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       child:  ButtonWidget(
                         title: 'Insta',
                         pathImage: "assets/images/insta.svg",
-                        hasBorder: true,
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.instagram!);
                         },
@@ -327,7 +327,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
                       child: ButtonWidget(
                         title: 'Whats',
                         pathImage: "assets/images/whats.svg",
-                        hasBorder: true,
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.whatsAppLink!);
                         },

@@ -26,3 +26,5 @@ class GetSettingsSuccess extends UserDataStates{
   GetSettingsSuccess(this.settingsEntity);
 }
 class GetSettingsError extends UserDataStates{}
+////////////////////////////////////////////////////////////////////////////////
+class ChangeAppMode extends UserDataStates{}

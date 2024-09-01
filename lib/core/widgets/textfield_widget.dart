@@ -44,9 +44,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       enabled: isEnabled,
-      style: const TextStyle(
-        color: Global.mediumBlueLight
-      ),
+      style: Theme.of(context).textTheme.titleSmall,
       decoration: InputDecoration(
         hintStyle: const TextStyle(
           color: Colors.grey,
