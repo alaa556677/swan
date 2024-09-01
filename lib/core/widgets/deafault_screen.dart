@@ -20,13 +20,13 @@ class DefaultScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: closeAppBar ? PreferredSize(
-          preferredSize: Size.zero,
-          child: AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarIconBrightness: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarIconBrightness,
-              statusBarColor: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarColor,
-            ),
-          )
+        preferredSize: Size.zero,
+        child: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarIconBrightness: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarIconBrightness,
+            statusBarColor: Theme.of(context).appBarTheme.systemOverlayStyle?.statusBarColor,
+          ),
+        )
       ) : appbar,
       body: body,
     );

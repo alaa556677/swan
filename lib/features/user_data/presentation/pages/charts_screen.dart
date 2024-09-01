@@ -135,7 +135,7 @@ class ChartsScreen extends StatelessWidget {
   List<SalesData> data = UserDataCubit.instance.charging.map((e) => SalesData(
     e.createdAt.toString().substring(14,19),
     e.money!.toDouble(),
-    color : e.money == UserDataCubit.instance.maxNumber() ? Global.buttonColor : Global.unSelectedColor,
+    color : e.money == UserDataCubit.instance.maxNumber() ? Global.buttonColor : Global.minChartColorDark,
   )).toList();
 }
 
