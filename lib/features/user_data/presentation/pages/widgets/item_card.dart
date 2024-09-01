@@ -8,9 +8,9 @@ class ItemForCard extends StatelessWidget{
   final String text;
   final String? titleData;
   final IconData? leadingIcon;
-  final IconData? trailingIcon;
 
-  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon, this.trailingIcon});
+  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon});
+
   @override
   Widget build(BuildContext context) {
     return Container(

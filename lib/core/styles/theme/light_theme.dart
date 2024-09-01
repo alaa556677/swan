@@ -13,7 +13,7 @@ ThemeData light = ThemeData(
     )
   ),
   iconTheme: const IconThemeData(
-    color: Global.whiteColor,
+    color: Global.blackColor,
   ),
   cardColor: Global.cardDataColorLight,
   indicatorColor: Global.blackColor.withOpacity(.90),

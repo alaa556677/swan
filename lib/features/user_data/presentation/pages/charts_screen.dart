@@ -72,9 +72,9 @@ class ChartsScreen extends StatelessWidget {
                                 onTap: (){
                                   themeNotifier.toggleTheme();
                                 },
-                                child: Icon(Icons.brightness_4_outlined, color: Theme.of(context).iconTheme.color,)),
+                                child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
-                            Icon(Icons.language, color: Theme.of(context).iconTheme.color,)
+                            const Icon(Icons.language, color: Global.whiteColor,)
                           ],
                         )
                       ],
@@ -89,7 +89,9 @@ class ChartsScreen extends StatelessWidget {
                     title: ChartTitle(
                       text: 'Money charging',
                       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      textStyle: Theme.of(context).textTheme.titleSmall,
+                      textStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 12.sp
+                      ),
                       alignment: ChartAlignment.center
                     ),
                     plotAreaBorderWidth: 0,

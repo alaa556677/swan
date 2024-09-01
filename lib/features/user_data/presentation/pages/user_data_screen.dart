@@ -31,9 +31,13 @@ class _UserDataScreenState extends State<UserDataScreen> {
 
   @override
   void initState() {
-    UserDataCubit.instance.getUserData();
-    UserDataCubit.instance.getSettings();
+    init();
     super.initState();
+  }
+
+  init() async {
+    await UserDataCubit.instance.getUserData();
+    await UserDataCubit.instance.getSettings();
   }
 
   @override
@@ -84,9 +88,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               onTap: (){
                                 themeNotifier.toggleTheme();
                               },
-                              child: Icon(Icons.brightness_4_outlined, color: Theme.of(context).iconTheme.color,)),
+                              child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
-                            Icon(Icons.language, color: Theme.of(context).iconTheme.color,)
+                            const Icon(Icons.language, color: Global.whiteColor,)
                           ],
                         )
                       ],
@@ -97,7 +101,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    state is GetUserDataLoading || state is GetSettingsLoading? const Center(child: CircularProgressIndicator(),): Expanded(
+                    UserDataCubit.instance.settingsEntity == null || UserDataCubit.instance.userDataEntity == null ? const Center(child: CircularProgressIndicator(),): Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
                           padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
@@ -120,45 +124,39 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 child: Column(
                                   children: [
                                     ItemForCard(
-                                      text: 'User Name',
+                                      text: 'Name',
                                       titleData: UserDataCubit.instance.userDataEntity?.userName ?? "",
                                       leadingIcon: Icons.person,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
                                       text: 'Email',
                                       titleData: UserDataCubit.instance.userDataEntity?.email ?? "",
                                       leadingIcon: Icons.email,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
                                       text: 'Limit',
                                       titleData: UserDataCubit.instance.userDataEntity?.limit != null ? UserDataCubit.instance.userDataEntity?.limit.toString() : "",
                                       leadingIcon: Icons.gas_meter_outlined,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Mobile Number',
+                                      text: 'Mobile',
                                       titleData: UserDataCubit.instance.userDataEntity?.mobile != null ? UserDataCubit.instance.userDataEntity?.mobile.toString() : "",
                                       leadingIcon: Icons.call,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Room Number',
+                                      text: 'Room',
                                       titleData: UserDataCubit.instance.userDataEntity?.roomNumber != null ? UserDataCubit.instance.userDataEntity?.roomNumber.toString() : "",
                                       leadingIcon: Icons.home_filled,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
                                       text: 'Status',
                                       titleData: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status?.toString() : "",
                                       leadingIcon: Icons.report_gmailerrorred_rounded,
-                                      trailingIcon: Icons.arrow_forward_ios_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ListView.builder(
@@ -168,7 +166,6 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                         text: 'Tax',
                                         titleData: UserDataCubit.instance.userDataEntity?.tax?[index].value != null ? UserDataCubit.instance.userDataEntity!.tax![index].value.toString() : "",
                                         leadingIcon: Icons.gas_meter_outlined,
-                                        trailingIcon: Icons.arrow_forward_ios_outlined,
                                       ),
                                       itemCount: UserDataCubit.instance.tax.length,
                                     ),
