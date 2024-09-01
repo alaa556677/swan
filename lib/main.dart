@@ -91,8 +91,8 @@ class _MyAppState extends State<MyApp> {
                 return null;
               },
               navigatorObservers: [RouteObserver<PageRoute>()],
-              // initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
-              initialRoute: Routes.login,
+              initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
+              // initialRoute: Routes.login,
               theme: light,
               darkTheme: dark,
               themeMode: themeNotifier.currentTheme,
