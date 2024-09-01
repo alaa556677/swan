@@ -10,7 +10,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.onChange,
-    this.isEnabled,
+    this.isEnabled = true,
     this.onFieldSubmitted,
     this.errorState = false,
     this.fillColor,
@@ -44,7 +44,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       enabled: isEnabled,
-      style: Theme.of(context).textTheme.titleSmall,
+      // style: Theme.of(context).textTheme.titleSmall,
       decoration: InputDecoration(
         hintStyle: const TextStyle(
           color: Colors.grey,

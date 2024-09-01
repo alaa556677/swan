@@ -19,9 +19,9 @@ ThemeData light = ThemeData(
   indicatorColor: Global.blackColor.withOpacity(.90),
   disabledColor: Global.unSelectedColor,
   textTheme: TextTheme(
-    titleSmall: TextStyle(
+    bodySmall: TextStyle(
       color: Global.blackColor,
-      fontSize: 15.sp
+      fontSize: 24.sp
     ),
     titleLarge: TextStyle(
       color: Global.blackColor,

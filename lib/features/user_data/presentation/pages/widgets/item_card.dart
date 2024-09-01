@@ -26,13 +26,13 @@ class ItemForCard extends StatelessWidget{
           children: [
             TextWidget(
               text : text,
-              textStyle: Theme.of(context).textTheme.titleSmall
+              textStyle: Theme.of(context).textTheme.bodySmall
             ),
             TextWidget(
               text : titleData ?? "",
               maxLines: 1,
               textOverflow: TextOverflow.ellipsis,
-              textStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+              textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Global.greyColor
               )
             ),

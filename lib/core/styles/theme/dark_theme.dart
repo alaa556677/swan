@@ -19,9 +19,9 @@ ThemeData dark = ThemeData(
     color: Global.whiteColor,
   ),
   textTheme: TextTheme(
-    titleSmall: TextStyle(
+    bodySmall: TextStyle(
         color: Global.whiteColor,
-        fontSize: 15.sp
+        fontSize: 24.sp
     ),
     titleLarge: TextStyle(
         color: Global.whiteColor,

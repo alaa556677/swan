@@ -86,7 +86,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           children: [
                             InkWell(
                               onTap: (){
-                                themeNotifier.toggleTheme();
+                                setState(() {
+                                  themeNotifier.toggleTheme();
+                                });
                               },
                               child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
@@ -113,9 +115,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               InputDecorator(
                                 decoration: InputDecoration(
                                   labelText: "User",
-                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                    color: Global.greyColor
-                                  ),
+                                  labelStyle: Theme.of(context).textTheme.titleSmall,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
                                     borderRadius: BorderRadius.circular(10.0),
@@ -176,8 +176,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               InputDecorator(
                                 decoration: InputDecoration(
                                   labelText: "Flow Rate",
-                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                      color: Global.greyColor
+                                  labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontSize: 14.sp
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
