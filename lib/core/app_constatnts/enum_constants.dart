@@ -1,4 +1,5 @@
 enum Constants {
   token,
-  darkMode
+  darkMode,
+  appLanguage
 }

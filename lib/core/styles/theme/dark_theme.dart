@@ -15,13 +15,15 @@ ThemeData dark = ThemeData(
   cardColor: Global.cardDataColorDark,
   indicatorColor: Global.whiteColor,
   disabledColor: Global.whiteColor,
+  splashColor: Colors.white,
+  canvasColor: Global.buttonColor,
   iconTheme: const IconThemeData(
     color: Global.whiteColor,
   ),
   textTheme: TextTheme(
-    bodySmall: TextStyle(
+    titleSmall: TextStyle(
         color: Global.whiteColor,
-        fontSize: 24.sp
+        fontSize: 15.sp
     ),
     titleLarge: TextStyle(
         color: Global.whiteColor,

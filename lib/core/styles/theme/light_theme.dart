@@ -18,10 +18,12 @@ ThemeData light = ThemeData(
   cardColor: Global.cardDataColorLight,
   indicatorColor: Global.blackColor.withOpacity(.90),
   disabledColor: Global.unSelectedColor,
+  canvasColor: Global.buttonColor,
+  splashColor: Colors.grey.withOpacity(.3),
   textTheme: TextTheme(
-    bodySmall: TextStyle(
+    titleSmall: TextStyle(
       color: Global.blackColor,
-      fontSize: 24.sp
+      fontSize: 15.sp
     ),
     titleLarge: TextStyle(
       color: Global.blackColor,

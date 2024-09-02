@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swan/core/app_constatnts/enum_constants.dart';
+import 'package:swan/core/network/cache_helper.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 import 'package:swan/features/user_data/presentation/cubit/user_states.dart';
 import '../../../../main.dart';
@@ -21,6 +23,7 @@ class UserDataCubit extends Cubit<UserDataStates>{
 
   static final UserDataCubit _userDataCubit = BlocProvider.of<UserDataCubit>(navigatorKey.currentState!.context);
   static UserDataCubit get instance => _userDataCubit;
+  static UserDataCubit get(context) => BlocProvider.of(context);
 
 ////////////////////////////////////////////////////////////////////////////////
   UserDataEntity? userDataEntity;
@@ -86,11 +89,12 @@ class UserDataCubit extends Cubit<UserDataStates>{
     });
   }
 ////////////////////////////////////////////////////////////////////////////////
-//   bool isDark = false;
-//   void changeAppMode (){
-//     isDark = !isDark;
-//     emit(ChangeAppMode());
-//   }
+  bool isDark = false;
+  void changeAppMode (){
+    isDark = !isDark;
+    CacheHelper.saveData(key: Constants.darkMode.toString(), value: isDark);
+    emit(ChangeAppMode());
+  }
 }
 
 class SalesData {

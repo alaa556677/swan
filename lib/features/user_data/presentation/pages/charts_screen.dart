@@ -15,6 +15,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import '../../../../core/app_constatnts/app_localization.dart';
 import '../../../../core/app_constatnts/global.dart';
 import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/deafault_screen.dart';
@@ -22,8 +23,17 @@ import '../../../../core/widgets/wave_widget.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_states.dart';
 
-class ChartsScreen extends StatelessWidget {
+class ChartsScreen extends StatefulWidget {
   ChartsScreen({super.key});
+
+  @override
+  State<ChartsScreen> createState() => _ChartsScreenState();
+}
+
+class _ChartsScreenState extends State<ChartsScreen> {
+
+  bool isTap = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -57,9 +67,9 @@ class ChartsScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        const Text(
-                          'Charts',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.translate('charts'),
+                          style: const TextStyle(
                             color: Global.whiteColor,
                             fontSize: 28.0,
                             fontWeight: FontWeight.w900,
@@ -69,12 +79,36 @@ class ChartsScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             InkWell(
-                                onTap: (){
-                                  themeNotifier.toggleTheme();
-                                },
-                                child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
+                              onTap: (){
+                                themeNotifier.toggleTheme();
+                              },
+                              child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
-                            const Icon(Icons.language, color: Global.whiteColor,)
+                            InkWell(
+                                onTap: (){
+                                  Locale myLocale = Localizations.localeOf(context);
+                                  setState(() {
+                                    myLocale = context.locale;
+                                    if (myLocale.languageCode == 'en') {
+                                      isTap = true;
+                                      Future.delayed(const Duration(seconds: 2), () {
+                                        setState(() {
+                                          isTap = false;
+                                        });
+                                      });
+                                      context.locale = const Locale('ar');
+                                    } else {
+                                      isTap = true;
+                                      Future.delayed(const Duration(seconds: 2), () {
+                                        setState(() {
+                                          isTap = false;
+                                        });
+                                      });
+                                      context.locale = const Locale('en');
+                                    }
+                                  });
+                                },
+                              child: const Icon(Icons.language, color: Global.whiteColor,))
                           ],
                         )
                       ],
@@ -87,7 +121,7 @@ class ChartsScreen extends StatelessWidget {
                   padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
                   child: SfCartesianChart(
                     title: ChartTitle(
-                      text: 'Money charging',
+                      text: AppLocalizations.of(context)!.translate('moneyCharging'),
                       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                       textStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
                           fontSize: 12.sp

@@ -51,6 +51,7 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: 14
         ),
         filled: true,
+        fillColor: Theme.of(context).splashColor,
         contentPadding: const EdgeInsetsDirectional.symmetric(horizontal: 24, vertical: 12),
         helperStyle: TextStyle(height: .3.h,),
         helperText: "",
@@ -61,12 +62,14 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffix ?? const SizedBox.shrink(),
         prefixIcon: prefix ?? const SizedBox.shrink(),
         floatingLabelStyle: const TextStyle(fontSize: 18),
-        label: Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp
-          ),
-        ),
+        hintText: label,
+        // label: Text(
+        //   label,
+        //   style: Theme.of(context).textTheme.titleSmall!.copyWith(
+        //     fontSize: 12.sp,
+        //     color: Theme.of(context).canvasColor
+        //   ),
+        // ),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(

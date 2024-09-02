@@ -1,0 +1,20 @@
+{
+  "login" : "Login",
+  "email" : "Email",
+  "password" : "Password",
+  "home" : "Home",
+  "user" : "User",
+  "name" : "Name",
+  "limit" : "Limit",
+  "mobile" : "Mobile",
+  "room" : "Room",
+  "status" : "Status",
+  "tax" : "Tax",
+  "flowRate" : "Flow Rate",
+  "consumption" : "Consumption",
+  "charts" : "Charts",
+  "faceBook" : "Face",
+  "instagram" : "Insta",
+  "whats" : "Whats",
+  "moneyCharging" : "Money Charging"
+}

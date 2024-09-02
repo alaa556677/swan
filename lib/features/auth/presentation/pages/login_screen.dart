@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:swan/core/app_constatnts/routes.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
+import '../../../../core/app_constatnts/app_localization.dart';
 import '../../../../core/app_constatnts/global.dart';
 import '../../../../core/app_constatnts/home_model.dart';
 import '../../../../core/app_constatnts/navigate_methods.dart';
@@ -53,28 +55,30 @@ class _LoginScreenState extends State<LoginScreen> {
           Stack(
             children: <Widget>[
               Container(
-                height: keyboardOpen ? 20.h: size.height * .30,
+                // height: keyboardOpen ? 20.h: size.height * .30,
+                height: size.height * .30,
                 color: Theme.of(context).primaryColor,
               ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeOutQuad,
-                top: keyboardOpen ? - size.height / 3.7 : 0.0,
-                // top: 0.0 ,
+                // top: keyboardOpen ? - size.height / 3.7 : 0.0,
+                top: 0.0 ,
                 child: WaveWidget(
                   size: size,
-                  yOffset: keyboardOpen ? 20.h : size.height / 4,
+                  yOffset: size.height / 4,
+                  // yOffset: keyboardOpen ? 20.h : size.height / 4,
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 70.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 70.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Login',
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.translate('login'),
+                      style: const TextStyle(
                         color: Global.whiteColor,
                         fontSize: 40.0,
                         fontWeight: FontWeight.w900,
@@ -85,82 +89,85 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 24.w, vertical: 30.h),
-            child: Form(
-              key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 30.h,),
-                  CustomTextFormField(
-                    controller: emailController,
-                    prefix: const Icon(Icons.email_outlined, color: Colors.grey,),
-                    validator: (value){
-                      if(value!.isEmpty){
-                        return "required";
-                      }
-                      return null;
-                    },
-                    label: 'Email',
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomTextFormField(
-                    label: 'Password',
-                    isPasswordVisible: AuthCubit.instance.obscureText,
-                    controller: passwordController,
-                    prefix: const Icon(Icons.lock_outline, color: Colors.grey,),
-                    suffix: Padding(
-                      padding: EdgeInsetsDirectional.symmetric(horizontal: 0.w),
-                      child: IconButton(
-                        onPressed: (){
-                          AuthCubit.instance.changeObscureText();
-                        },
-                        icon: Icon(AuthCubit.instance.obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined),
-                        iconSize: 20,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    validator: (value){
-                      if(value!.isEmpty){
-                        return "required";
-                      }
-                      return null;
-                    },
-                  ),
-                  // const SizedBox(
-                  //   height: 10.0,
-                  // ),
-                  // const Text(
-                  //   'Forgot password?',
-                  //   style: TextStyle(
-                  //     color: Global.mediumBlue,
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  ConditionalBuilder(
-                      condition: state is !LoginLoading,
-                      builder: (context) => ButtonWidget(
-                        title: 'Login',
-                        onTap: (){
-                          if(formKey.currentState!.validate()){
-                            AuthCubit.instance.loginMethod(emailController.text, passwordController.text);
+          Expanded(
+            child: Padding(
+              padding: EdgeInsetsDirectional.symmetric(horizontal: 24.w, vertical: 30.h),
+              child: Form(
+                key: formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 30.h,),
+                      CustomTextFormField(
+                        controller: emailController,
+                        prefix: const Icon(Icons.email_outlined, color: Colors.grey,),
+                        validator: (value){
+                          if(value!.isEmpty){
+                            return "required";
                           }
+                          return null;
+                        },
+                        label: AppLocalizations.of(context)!.translate('email'),
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomTextFormField(
+                        label: AppLocalizations.of(context)!.translate('password'),
+                        isPasswordVisible: AuthCubit.instance.obscureText,
+                        controller: passwordController,
+                        prefix: const Icon(Icons.lock_outline, color: Colors.grey,),
+                        suffix: Padding(
+                          padding: EdgeInsetsDirectional.symmetric(horizontal: 0.w),
+                          child: IconButton(
+                            onPressed: (){
+                              AuthCubit.instance.changeObscureText();
+                            },
+                            icon: Icon(AuthCubit.instance.obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                            iconSize: 20,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        validator: (value){
+                          if(value!.isEmpty){
+                            return "required";
+                          }
+                          return null;
                         },
                       ),
-                      fallback: (context) => const Center(child: CircularProgressIndicator(),)
+                      // const SizedBox(
+                      //   height: 10.0,
+                      // ),
+                      // const Text(
+                      //   'Forgot password?',
+                      //   style: TextStyle(
+                      //     color: Global.mediumBlue,
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      ConditionalBuilder(
+                          condition: state is !LoginLoading,
+                          builder: (context) => ButtonWidget(
+                            title: AppLocalizations.of(context)!.translate('login'),
+                            onTap: (){
+                              if(formKey.currentState!.validate()){
+                                AuthCubit.instance.loginMethod(emailController.text, passwordController.text);
+                              }
+                            },
+                          ),
+                          fallback: (context) => const Center(child: CircularProgressIndicator(),)
+                      ),
+                      // const SizedBox(
+                      //   height: 10.0,
+                      // ),
+                      // const ButtonWidget(
+                      //   title: 'Sign Up',
+                      //   hasBorder: true,
+                      // ),
+                    ],
                   ),
-
-                  // const SizedBox(
-                  //   height: 10.0,
-                  // ),
-                  // const ButtonWidget(
-                  //   title: 'Sign Up',
-                  //   hasBorder: true,
-                  // ),
-                ],
+                ),
               ),
             ),
           ),

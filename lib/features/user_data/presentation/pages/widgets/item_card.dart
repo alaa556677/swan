@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:swan/core/app_constatnts/global.dart';
 
+import '../../../../../core/styles/theme/change_notifier.dart';
 import '../../../../../core/widgets/text_widget.dart';
 
 class ItemForCard extends StatelessWidget{
   final String text;
   final String? titleData;
   final IconData? leadingIcon;
+  final TextStyle? textStyle;
 
-  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon});
+  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon, this.textStyle});
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -26,14 +30,21 @@ class ItemForCard extends StatelessWidget{
           children: [
             TextWidget(
               text : text,
-              textStyle: Theme.of(context).textTheme.bodySmall
+              textStyle: themeNotifier.currentTheme == ThemeMode.light ? TextStyle(
+                fontSize: 15.sp,
+                color: Global.blackColor
+              ): TextStyle(
+                  fontSize: 15.sp,
+                  color: Global.whiteColor
+              )
             ),
             TextWidget(
               text : titleData ?? "",
               maxLines: 1,
               textOverflow: TextOverflow.ellipsis,
-              textStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Global.greyColor
+              textStyle: TextStyle(
+                  fontSize: 15.sp,
+                  color: Global.greyColor
               )
             ),
           ],

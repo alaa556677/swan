@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:swan/core/app_constatnts/enum_constants.dart';
 import 'package:swan/features/user_data/presentation/cubit/user_states.dart';
 import 'package:swan/features/user_data/presentation/pages/charts_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
+import 'core/app_constatnts/app_localization.dart';
 import 'core/app_constatnts/bloc_observer.dart';
 import 'core/app_constatnts/home_model.dart';
 import 'core/app_constatnts/routes.dart';
@@ -23,13 +25,23 @@ import 'locator.dart' as di;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
+  await EasyLocalization.ensureInitialized();
   DioHelper.init();
-  CacheHelper.saveData(key: Constants.darkMode.toString(), value: false);
   di.setup();
   Bloc.observer = MyBlocObserver();
-  runApp(ChangeNotifierProvider(
-    create: (_) => ThemeNotifier(),
-    child: const MyApp())
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: EasyLocalization(
+        path: 'assets/translations',
+        supportedLocales: const [
+          Locale('en'),
+          Locale('ar'), ],
+        startLocale: const Locale('en'),
+        saveLocale: true,
+        child: const MyApp()
+      )
+    )
   );
 }
 
@@ -63,39 +75,52 @@ class _MyAppState extends State<MyApp> {
         builder: (BuildContext context, Widget? child){
           return ChangeNotifierProvider(
             create: (context) => HomeModel(),
-            child : MaterialApp(
-              navigatorKey: navigatorKey,
-              scaffoldMessengerKey: snackBarKey,
-              debugShowCheckedModeBanner: false,
-              onGenerateRoute: (settings){
-                Widget? wid;
-                switch (settings.name) {
-                  case Routes.login:
-                    wid = const LoginScreen();
-                    break;
-                  case Routes.userDataScreen:
-                    wid = const UserDataScreen();
-                    break;
-                  case Routes.chartsScreen:
-                    wid = ChartsScreen();
-                    break;
-                }
-                if (wid != null) {
-                  return PageRouteBuilder(
-                      settings: settings,
-                      // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-                      pageBuilder: (_, __, ___) => wid!,
-                      transitionsBuilder: (_, a, __, c) =>
-                          FadeTransition(opacity: a, child: c));
-                }
-                return null;
+            child : BlocConsumer<UserDataCubit, UserDataStates>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                return MaterialApp(
+                  navigatorKey: navigatorKey,
+                  scaffoldMessengerKey: snackBarKey,
+                  debugShowCheckedModeBanner: false,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                  ],
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
+                  onGenerateRoute: (settings){
+                    Widget? wid;
+                    switch (settings.name) {
+                      case Routes.login:
+                        wid = const LoginScreen();
+                        break;
+                      case Routes.userDataScreen:
+                        wid = const UserDataScreen();
+                        break;
+                      case Routes.chartsScreen:
+                        wid = ChartsScreen();
+                        break;
+                    }
+                    if (wid != null) {
+                      return PageRouteBuilder(
+                          settings: settings,
+                          // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
+                          pageBuilder: (_, __, ___) => wid!,
+                          transitionsBuilder: (_, a, __, c) =>
+                              FadeTransition(opacity: a, child: c));
+                    }
+                    return null;
+                  },
+                  navigatorObservers: [RouteObserver<PageRoute>()],
+                  initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
+                  // initialRoute: Routes.login,
+                  theme: light,
+                  darkTheme: dark,
+                  themeMode: themeNotifier.currentTheme,
+                );
               },
-              navigatorObservers: [RouteObserver<PageRoute>()],
-              initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
-              // initialRoute: Routes.login,
-              theme: light,
-              darkTheme: dark,
-              themeMode: themeNotifier.currentTheme,
             ),
           );
         },

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +14,7 @@ import 'package:swan/core/widgets/deafault_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/widgets/item_card.dart';
 import 'package:swan/features/user_data/presentation/pages/widgets/user_data_card.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../core/app_constatnts/app_localization.dart';
 import '../../../../core/app_constatnts/home_model.dart';
 import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/button_widget.dart';
@@ -28,6 +30,8 @@ class UserDataScreen extends StatefulWidget {
 }
 
 class _UserDataScreenState extends State<UserDataScreen> {
+
+  bool isTap = false;
 
   @override
   void initState() {
@@ -73,9 +77,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        const Text(
-                          'Home',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.translate('home'),
+                          style: const TextStyle(
                             color: Global.whiteColor,
                             fontSize: 28.0,
                             fontWeight: FontWeight.w900,
@@ -86,13 +90,35 @@ class _UserDataScreenState extends State<UserDataScreen> {
                           children: [
                             InkWell(
                               onTap: (){
-                                setState(() {
-                                  themeNotifier.toggleTheme();
-                                });
+                                themeNotifier.toggleTheme();
                               },
                               child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
-                            const Icon(Icons.language, color: Global.whiteColor,)
+                            InkWell(
+                              onTap: (){
+                                Locale myLocale = Localizations.localeOf(context);
+                                setState(() {
+                                  myLocale = context.locale;
+                                  if (myLocale.languageCode == 'en') {
+                                    isTap = true;
+                                    Future.delayed(const Duration(seconds: 2), () {
+                                      setState(() {
+                                        isTap = false;
+                                      });
+                                    });
+                                    context.locale = const Locale('ar');
+                                  } else {
+                                    isTap = true;
+                                    Future.delayed(const Duration(seconds: 2), () {
+                                      setState(() {
+                                        isTap = false;
+                                      });
+                                    });
+                                    context.locale = const Locale('en');
+                                  }
+                                });
+                              },
+                              child: const Icon(Icons.language, color: Global.whiteColor,))
                           ],
                         )
                       ],
@@ -114,8 +140,10 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               SizedBox(height: 12.h,),
                               InputDecorator(
                                 decoration: InputDecoration(
-                                  labelText: "User",
-                                  labelStyle: Theme.of(context).textTheme.titleSmall,
+                                  labelText: AppLocalizations.of(context)!.translate('user'),
+                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    fontSize: 18.sp
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
                                     borderRadius: BorderRadius.circular(10.0),
@@ -124,37 +152,38 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                 child: Column(
                                   children: [
                                     ItemForCard(
-                                      text: 'Name',
+                                      text: AppLocalizations.of(context)!.translate('name'),
                                       titleData: UserDataCubit.instance.userDataEntity?.userName ?? "",
                                       leadingIcon: Icons.person,
+                                      textStyle: Theme.of(context).textTheme.titleSmall,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Email',
+                                      text: AppLocalizations.of(context)!.translate('email'),
                                       titleData: UserDataCubit.instance.userDataEntity?.email ?? "",
                                       leadingIcon: Icons.email,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Limit',
+                                      text: AppLocalizations.of(context)!.translate('limit'),
                                       titleData: UserDataCubit.instance.userDataEntity?.limit != null ? UserDataCubit.instance.userDataEntity?.limit.toString() : "",
                                       leadingIcon: Icons.gas_meter_outlined,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Mobile',
+                                      text: AppLocalizations.of(context)!.translate('mobile'),
                                       titleData: UserDataCubit.instance.userDataEntity?.mobile != null ? UserDataCubit.instance.userDataEntity?.mobile.toString() : "",
                                       leadingIcon: Icons.call,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Room',
+                                      text: AppLocalizations.of(context)!.translate('room'),
                                       titleData: UserDataCubit.instance.userDataEntity?.roomNumber != null ? UserDataCubit.instance.userDataEntity?.roomNumber.toString() : "",
                                       leadingIcon: Icons.home_filled,
                                     ),
                                     SizedBox(height: 10.h,),
                                     ItemForCard(
-                                      text: 'Status',
+                                      text: AppLocalizations.of(context)!.translate('status'),
                                       titleData: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status?.toString() : "",
                                       leadingIcon: Icons.report_gmailerrorred_rounded,
                                     ),
@@ -163,7 +192,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                       physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) => ItemForCard(
-                                        text: 'Tax',
+                                        text: AppLocalizations.of(context)!.translate('tax'),
                                         titleData: UserDataCubit.instance.userDataEntity?.tax?[index].value != null ? UserDataCubit.instance.userDataEntity!.tax![index].value.toString() : "",
                                         leadingIcon: Icons.gas_meter_outlined,
                                       ),
@@ -175,9 +204,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               SizedBox(height: 18.h,),
                               InputDecorator(
                                 decoration: InputDecoration(
-                                  labelText: "Flow Rate",
-                                  labelStyle: Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    fontSize: 14.sp
+                                  labelText: AppLocalizations.of(context)!.translate('flowRate'),
+                                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                                      fontSize: 18.sp
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
@@ -243,9 +272,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               SizedBox(height: 24.h,),
                               InputDecorator(
                                 decoration: InputDecoration(
-                                  labelText: "Consumption",
+                                  labelText: AppLocalizations.of(context)!.translate('consumption'),
                                   labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                                      color: Global.greyColor
+                                      fontSize: 18.sp
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(width: .5.w, color: Colors.grey,),
@@ -282,7 +311,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               ),
                               SizedBox(height: 18.h,),
                               ButtonWidget(
-                                title: 'Charts',
+                                title: AppLocalizations.of(context)!.translate('charts'),
                                 onTap: (){
                                   navigateToNamed(route: Routes.chartsScreen);
                                 },
@@ -302,17 +331,18 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   children: [
                     Expanded(
                       child: ButtonWidget(
-                        title: 'Face',
+                        title: AppLocalizations.of(context)!.translate('faceBook'),
                         pathImage: "assets/images/signin_facebook.svg",
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.facebook!);
+                          // launchURL(UserDataCubit.instance.settingsEntity!.facebook!);
                         },
                       ),
                     ),
                     SizedBox(width: 8.w,),
                     Expanded(
                       child:  ButtonWidget(
-                        title: 'Insta',
+                        title: AppLocalizations.of(context)!.translate('instagram'),
                         pathImage: "assets/images/insta.svg",
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.instagram!);
@@ -322,7 +352,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                     SizedBox(width: 8.w,),
                     Expanded(
                       child: ButtonWidget(
-                        title: 'Whats',
+                        title: AppLocalizations.of(context)!.translate('whats'),
                         pathImage: "assets/images/whats.svg",
                         onTap: (){
                           launchURL(UserDataCubit.instance.settingsEntity!.whatsAppLink!);
@@ -340,10 +370,15 @@ class _UserDataScreenState extends State<UserDataScreen> {
   }
 
   void launchURL(String urlPath) async {
-    if (await canLaunchUrl(Uri.parse(urlPath))) {
-      await launchUrl(Uri.parse(urlPath));
-    } else {
-      throw 'Could not launch $urlPath';
+    try{
+      if (await canLaunchUrl(Uri.parse(urlPath))) {
+        await launchUrl(Uri.parse(urlPath));
+      }
+    }catch(e){
+      debugPrint("error is $e");
     }
+    //  else {
+    //   throw 'Could not launch $urlPath';
+    // }
   }
 }
