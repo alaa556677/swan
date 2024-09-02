@@ -20,13 +20,13 @@ class DefaultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: closeAppBar ? PreferredSize(
           preferredSize: Size.zero,
           child: AppBar(
             systemOverlayStyle: const SystemUiOverlayStyle(
               statusBarIconBrightness: Brightness.light,
-              statusBarColor: Global.mediumBlue,
+              statusBarColor: Global.mediumBlueLight,
             ),
           )
       ) : appbar,

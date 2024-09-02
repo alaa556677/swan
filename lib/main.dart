@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:swan/core/app_constatnts/enum_constants.dart';
 import 'package:swan/features/user_data/presentation/pages/charts_screen.dart';
 import 'package:swan/features/user_data/presentation/pages/user_data_screen.dart';
 import 'core/app_constatnts/bloc_observer.dart';
@@ -10,6 +11,7 @@ import 'core/app_constatnts/home_model.dart';
 import 'core/app_constatnts/routes.dart';
 import 'core/network/cache_helper.dart';
 import 'core/network/dio_helper.dart';
+import 'core/styles/theme/dark_theme.dart';
 import 'core/styles/theme/light_theme.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
 import 'features/auth/presentation/pages/login_screen.dart';
@@ -20,6 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
   DioHelper.init();
+  CacheHelper.saveData(key: Constants.darkMode.toString(), value: false);
   di.setup();
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
@@ -58,7 +61,7 @@ class MyApp extends StatelessWidget {
                     wid = const UserDataScreen();
                     break;
                   case Routes.chartsScreen:
-                    wid = const ChartsScreen();
+                    wid = ChartsScreen();
                     break;
                 }
                 if (wid != null) {
@@ -72,8 +75,9 @@ class MyApp extends StatelessWidget {
                 return null;
               },
               navigatorObservers: [RouteObserver<PageRoute>()],
-              initialRoute: Routes.login,
-              // theme: light,
+              initialRoute: CacheHelper.getData(key: Constants.token.toString()) != null ? Routes.userDataScreen : Routes.login,
+              theme: CacheHelper.getData(key: Constants.darkMode.toString()) == true ? dark : light,
+              themeMode: CacheHelper.getData(key: Constants.darkMode.toString()) == true ? ThemeMode.dark : ThemeMode.light,
             )
           );
         },

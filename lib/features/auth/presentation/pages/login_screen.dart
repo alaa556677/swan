@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: <Widget>[
           Container(
             height: size.height - 200,
-            color: Global.mediumBlue,
+            color: Theme.of(context).primaryColor,
           ),
           AnimatedPositioned(
             duration: const Duration(milliseconds: 500),

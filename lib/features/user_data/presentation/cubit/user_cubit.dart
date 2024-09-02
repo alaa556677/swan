@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swan/features/auth/presentation/cubit/auth_states.dart';
 import 'package:swan/features/user_data/presentation/cubit/user_states.dart';
@@ -53,4 +55,41 @@ class UserDataCubit extends Cubit<UserDataStates>{
     });
   }
 ////////////////////////////////////////////////////////////////////////////////
+  List<double> list = [];
+  maxNumber(){
+    double maxValue = 0;
+    for (int i = 0; i < charging.length; i++) {
+      list.add(charging[i].money!.toDouble());
+    }
+    list.reduce((value, element) {
+      if (element > value) {
+        maxValue = element;
+        return maxValue;
+      }
+      return maxValue;
+    });
+    return maxValue;
+  }
+////////////////////////////////////////////////////////////////////////////////
+  getString(){
+    List <String> date = [];
+    String text = '';
+    for (int i = 0; i < charging.length; i++) {
+      list.add(charging[i].createdAt);
+    }
+    date.reduce((value, element){
+      if(element == value) {
+        return "${DateFormat('yyyy-MM-dd').format(DateTime.parse(element.toString()))} ";
+      } else {
+        return DateFormat('yyyy-MM-dd').format(DateTime.parse(element.toString()));
+      }
+    });
+  }
+}
+
+class SalesData {
+  SalesData(this.day, this.money, {this.color});
+  final String day;
+  final double money;
+  final Color? color;
 }

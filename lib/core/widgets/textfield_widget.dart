@@ -45,7 +45,7 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       enabled: isEnabled,
       style: const TextStyle(
-        color: Global.mediumBlue
+        color: Global.mediumBlueLight
       ),
       decoration: InputDecoration(
         hintStyle: const TextStyle(
@@ -77,7 +77,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.r),
-            borderSide: const BorderSide(color:Global.mediumBlue)),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor)),
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.r),
             borderSide: const BorderSide(color: Colors.grey)),

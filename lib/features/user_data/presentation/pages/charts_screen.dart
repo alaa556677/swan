@@ -1,109 +1,141 @@
+import 'dart:math';
+
+import 'package:d_chart/commons/data_model/data_model.dart';
+import 'package:d_chart/commons/enums.dart';
+import 'package:d_chart/ordinal/bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mrx_charts/mrx_charts.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/charts.dart';
+// import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 // import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import '../../../../core/app_constatnts/global.dart';
 import '../../../../core/widgets/deafault_screen.dart';
 import '../../../../core/widgets/wave_widget.dart';
+import '../cubit/user_cubit.dart';
+import '../cubit/user_states.dart';
 
 class ChartsScreen extends StatelessWidget {
-  const ChartsScreen({super.key});
+  ChartsScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-    return DefaultScreen(
-      closeAppBar: true,
-      body: Column(
-        children: [
-          Stack(
+    return BlocConsumer<UserDataCubit, UserDataStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return DefaultScreen(
+          closeAppBar: true,
+          body: Column(
             children: [
-              Container(
-                height: size.height * .18,
-                color: Global.mediumBlue,
-              ),
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutQuad,
-                top: keyboardOpen ? -size.height / 3.7 : 0.0,
-                child: WaveWidget(
-                  size: size,
-                  yOffset: size.height / 8,
-                  color: Global.white,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.only(top: 24.h, start: 20.w, end: 20.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    const Text(
-                      'Charts',
-                      style: TextStyle(
-                        color: Global.white,
-                        fontSize: 28.0,
-                        fontWeight: FontWeight.w900,
-                      ),
+              Stack(
+                children: [
+                  Container(
+                    height: size.height * .18,
+                    color: Global.mediumBlueLight,
+                  ),
+                  AnimatedPositioned(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutQuad,
+                    top: keyboardOpen ? -size.height / 3.7 : 0.0,
+                    child: WaveWidget(
+                      size: size,
+                      yOffset: size.height / 8,
+                      color: Global.white,
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.brightness_4_outlined, color: Colors.white,),
-                        SizedBox(width: 12.w,),
-                        const Icon(Icons.language, color: Colors.white,)
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(top: 24.h, start: 20.w, end: 20.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text(
+                          'Charts',
+                          style: TextStyle(
+                            color: Global.white,
+                            fontSize: 28.0,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.brightness_4_outlined, color: Colors.white,),
+                            SizedBox(width: 12.w,),
+                            const Icon(Icons.language, color: Colors.white,)
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                ],
               ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+                  child: SfCartesianChart(
+                      title: ChartTitle(
+                          text: 'Money charging',
+                          backgroundColor: Colors.white,
+                          textStyle: const TextStyle(fontSize: 12),
+                          alignment: ChartAlignment.center),
+                      plotAreaBorderWidth: 0,
+                      primaryXAxis: CategoryAxis(
+                        axisLine: const AxisLine(width: 0),
+                        majorGridLines: const MajorGridLines(width: 0),
+                      ),
+                      primaryYAxis: NumericAxis(
+                        minimum: 0,
+                        maximum: UserDataCubit.instance.maxNumber(),
+                        interval: UserDataCubit.instance.maxNumber() / 2,
+                        axisLine: const AxisLine(width: 0),
+                        majorGridLines: const MajorGridLines(width: 0),
+                      ),
+                      tooltipBehavior: TooltipBehavior(enable: true),
+                      series: <ColumnSeries<SalesData, String>>[
+                        ColumnSeries<SalesData, String>(
+                          dataSource: data,
+                          pointColorMapper: (SalesData data, _) => data.color,
+                          animationDuration: 2000,
+                          xValueMapper: (SalesData data, _) => data.day,
+                          yValueMapper: (SalesData data, _) => data.money,
+                        )
+                      ]),
+                ),
+              )
             ],
           ),
-          // SfCartesianChart(
-          //     title: const ChartTitle(
-          //         text: '74 Sales Invoice',
-          //         backgroundColor: Colors.white,
-          //         textStyle: TextStyle(fontSize: 12),
-          //         alignment: ChartAlignment.center),
-          //     plotAreaBorderWidth: 0,
-          //     primaryXAxis: const CategoryAxis(
-          //       axisLine: AxisLine(width: 0),
-          //       majorGridLines: MajorGridLines(width: 0),
-          //     ),
-          //     primaryYAxis: const NumericAxis(
-          //       minimum: 0,
-          //       maximum: 500,
-          //       interval: 250,
-          //       axisLine: AxisLine(width: 0),
-          //       majorGridLines: MajorGridLines(width: 0),
-          //     ),
-          //     tooltipBehavior: TooltipBehavior(enable: true),
-          //     series: <ColumnSeries<SalesData, String>>[
-          //       ColumnSeries<SalesData, String>(
-          //         dataSource: data,
-          //         pointColorMapper: (SalesData data, _) => data.color,
-          //         animationDuration: 2000,
-          //         xValueMapper: (SalesData data, _) => data.day,
-          //         yValueMapper: (SalesData data, _) => data.rate,
-          //       )
-          //     ]),
-        ],
-      ),
+        );
+      },
     );
   }
+
+  List<SalesData> data = UserDataCubit.instance.charging.map((e) => SalesData(
+    e.createdAt.toString().substring(14,19),
+    e.money!.toDouble(),
+    color : e.money == UserDataCubit.instance.maxNumber() ? Global.mediumBlueLight : Colors.blueAccent.withOpacity(.2),
+  )).toList();
 }
 
-class SalesData {
-  SalesData(this.day, this.rate, {this.color});
-  final String day;
-  final double rate;
-  final Color? color;
-}
-List<SalesData> data = [
-  SalesData('M', 100,color: Colors.grey.shade400),  //  color: Colors.grey.shade400
-  SalesData('T', 270,color: Colors.grey.shade400),
-  SalesData('W', 480, color: Colors.red.shade300),
-  SalesData('T ', 150, color: Colors.grey.shade400),
-  SalesData('F', 350, color: Colors.grey.shade400),
-  SalesData('S', 250, color: Colors.grey.shade400),
-  SalesData('S ', 150, color: Colors.grey.shade400),
-];
+
+// Padding(
+//   padding:  EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+//   child: AspectRatio(
+//     aspectRatio: 16 / 9,
+//     child: DChartBarO(
+//       groupList: [
+//         OrdinalGroup(
+//           id: '1',
+//           color: Global.mediumBlue,
+//           chartType: ChartType.line,
+//           // data: UserDataCubit.instance.charging.map((e) => OrdinalData(domain: DateFormat('MMMM d, y').format(DateTime.parse(e.createdAt.toString())), measure: e.money!.toInt())).toList()
+//           data: UserDataCubit.instance.charging.map((e) => OrdinalData(domain: e.createdAt, measure: e.money!.toInt())).toList()
+//         ),
+//       ],
+//     ),
+//   ),
+// ),

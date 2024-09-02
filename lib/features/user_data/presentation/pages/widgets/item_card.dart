@@ -14,16 +14,10 @@ class ItemForCard extends StatelessWidget{
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFE6E6E6),
+        color: Colors.white54,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey, width: .5.w),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(.16),
-            offset: const Offset(0,0),
-            blurRadius: 12
-          )
-        ]
+
       ),
       child: ListTile(
         leading: Icon(leadingIcon),
@@ -48,7 +42,7 @@ class ItemForCard extends StatelessWidget{
             ),
           ],
         ),
-        trailing: Icon(trailingIcon),
+        // trailing: Icon(trailingIcon),
         contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
       ),
     );

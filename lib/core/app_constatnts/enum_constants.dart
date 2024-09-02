@@ -1,3 +1,4 @@
 enum Constants {
-  token
+  token,
+  darkMode
 }
