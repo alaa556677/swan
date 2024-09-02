@@ -42,10 +42,10 @@ class _LoginScreenState extends State<LoginScreen> {
           emailController.clear();
           passwordController.clear();
           navigateToAndRemoveNamed(route: Routes.userDataScreen);
-        } else if (state is LoginError){
+        } else if (state is LoginError || state is LoginFailure){
           emailController.clear();
           passwordController.clear();
-          customShowSnackBar(isError: true, message: "Login Error");
+          customShowSnackBar(isError: true, message: "Error, Please check your internet");
         }
       },
       builder: (context, state) => DefaultScreen(

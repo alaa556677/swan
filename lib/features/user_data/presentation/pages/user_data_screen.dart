@@ -130,7 +130,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
               Expanded(
                 child: Column(
                   children: [
-                    UserDataCubit.instance.settingsEntity == null || UserDataCubit.instance.userDataEntity == null ? const Center(child: CircularProgressIndicator(),): getNetworkFailed(state)
+                    state is GetSettingsLoading || state is GetUserDataLoading ? const Center(child: CircularProgressIndicator(),)
+                        : state is GetSettingsFailure || state is GetSettingsError || state is GetUserDataError || state is GetUserDataFailure
+                    ? const NetworkFailedScreen() : getNetworkFailed(state)
                   ],
                 ),
               ),
@@ -189,202 +191,198 @@ class _UserDataScreenState extends State<UserDataScreen> {
   }
 ////////////////////////////////////////////////////////////////////////////////
   getNetworkFailed(UserDataStates state){
-    if(state is GetSettingsFailure || state is GetSettingsError || state is GetUserDataFailure || state is GetUserDataError){
-      return const NetworkFailedScreen();
-    } else {
-      return Expanded(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 12.h,),
-                InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.translate('user'),
-                    labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 18.sp
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: .5.w, color: Colors.grey,),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 12.h,),
+              InputDecorator(
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.translate('user'),
+                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 18.sp
                   ),
-                  child: Column(
-                    children: [
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('name'),
-                        titleData: UserDataCubit.instance.userDataEntity?.userName ?? "",
-                        leadingIcon: Icons.person,
-                        textStyle: Theme.of(context).textTheme.titleSmall,
-                      ),
-                      SizedBox(height: 10.h,),
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('email'),
-                        titleData: UserDataCubit.instance.userDataEntity?.email ?? "",
-                        leadingIcon: Icons.email,
-                      ),
-                      SizedBox(height: 10.h,),
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('limit'),
-                        titleData: UserDataCubit.instance.userDataEntity?.limit != null ? UserDataCubit.instance.userDataEntity?.limit.toString() : "",
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: .5.w, color: Colors.grey,),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('name'),
+                      titleData: UserDataCubit.instance.userDataEntity?.userName ?? "",
+                      leadingIcon: Icons.person,
+                      textStyle: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('email'),
+                      titleData: UserDataCubit.instance.userDataEntity?.email ?? "",
+                      leadingIcon: Icons.email,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('limit'),
+                      titleData: UserDataCubit.instance.userDataEntity?.limit != null ? UserDataCubit.instance.userDataEntity?.limit.toString() : "",
+                      leadingIcon: Icons.gas_meter_outlined,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('mobile'),
+                      titleData: UserDataCubit.instance.userDataEntity?.mobile != null ? UserDataCubit.instance.userDataEntity?.mobile.toString() : "",
+                      leadingIcon: Icons.call,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('room'),
+                      titleData: UserDataCubit.instance.userDataEntity?.roomNumber != null ? UserDataCubit.instance.userDataEntity?.roomNumber.toString() : "",
+                      leadingIcon: Icons.home_filled,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ItemForCard(
+                      text: AppLocalizations.of(context)!.translate('status'),
+                      titleData: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status?.toString() : "",
+                      leadingIcon: Icons.report_gmailerrorred_rounded,
+                    ),
+                    SizedBox(height: 10.h,),
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => ItemForCard(
+                        text: AppLocalizations.of(context)!.translate('tax'),
+                        titleData: UserDataCubit.instance.userDataEntity?.tax?[index].value != null ? UserDataCubit.instance.userDataEntity!.tax![index].value.toString() : "",
                         leadingIcon: Icons.gas_meter_outlined,
                       ),
-                      SizedBox(height: 10.h,),
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('mobile'),
-                        titleData: UserDataCubit.instance.userDataEntity?.mobile != null ? UserDataCubit.instance.userDataEntity?.mobile.toString() : "",
-                        leadingIcon: Icons.call,
-                      ),
-                      SizedBox(height: 10.h,),
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('room'),
-                        titleData: UserDataCubit.instance.userDataEntity?.roomNumber != null ? UserDataCubit.instance.userDataEntity?.roomNumber.toString() : "",
-                        leadingIcon: Icons.home_filled,
-                      ),
-                      SizedBox(height: 10.h,),
-                      ItemForCard(
-                        text: AppLocalizations.of(context)!.translate('status'),
-                        titleData: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status?.toString() : "",
-                        leadingIcon: Icons.report_gmailerrorred_rounded,
-                      ),
-                      SizedBox(height: 10.h,),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => ItemForCard(
-                          text: AppLocalizations.of(context)!.translate('tax'),
-                          titleData: UserDataCubit.instance.userDataEntity?.tax?[index].value != null ? UserDataCubit.instance.userDataEntity!.tax![index].value.toString() : "",
-                          leadingIcon: Icons.gas_meter_outlined,
-                        ),
-                        itemCount: UserDataCubit.instance.tax.length,
-                      ),
-                    ],
+                      itemCount: UserDataCubit.instance.tax.length,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 18.h,),
+              InputDecorator(
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.translate('flowRate'),
+                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 18.sp
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: .5.w, color: Colors.grey,),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                SizedBox(height: 18.h,),
-                InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.translate('flowRate'),
-                    labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 18.sp
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: .5.w, color: Colors.grey,),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedRadialGauge(
-                        duration: const Duration(seconds: 1),
-                        value: UserDataCubit.instance.userDataEntity?.flowRate?.toDouble() ??.5,
-                        // value:  0,
-                        curve: Curves.elasticOut,
-                        radius: 80,
-                        axis: GaugeAxis(
-                            min: 0,
-                            max: 1000,
-                            style: GaugeAxisStyle(
-                              thickness: 12,
-                              background: Theme.of(context).primaryColor,
-                              segmentSpacing: 4,
-                            ),
-                            pointer: GaugePointer.needle(
-                              width: 20,
-                              height: 60,
-                              color: Theme.of(context).indicatorColor,
-                            ),
-                            progressBar: GaugeProgressBar.rounded(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            segments: const [
-                              GaugeSegment(
-                                from: 0,
-                                to: 250,
-                                color: Color(0xFFD9DEEB),
-                                cornerRadius: Radius.zero,
-                              ),
-                              GaugeSegment(
-                                from: 250,
-                                to: 500,
-                                color: Color(0xFFD9DEEB),
-                                cornerRadius: Radius.zero,
-                              ),
-                              GaugeSegment(
-                                from: 500,
-                                to: 750,
-                                color: Color(0xFFD9DEEB),
-                                cornerRadius: Radius.zero,
-                              ),
-                              GaugeSegment(
-                                from: 750,
-                                to: 1000,
-                                color: Color(0xFFD9DEEB),
-                                cornerRadius: Radius.zero,
-                              ),
-                            ]
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 24.h,),
-                InputDecorator(
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.translate('consumption'),
-                    labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: 18.sp
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: .5.w, color: Colors.grey,),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularStepProgressIndicator(
-                        totalSteps: UserDataCubit.instance.userDataEntity?.limit ?? 100,
-                        currentStep: UserDataCubit.instance.userDataEntity?.consumption ?? 0,
-                        stepSize: 12,
-                        selectedColor: Theme.of(context).primaryColor,
-                        unselectedColor: Theme.of(context).disabledColor,
-                        padding: 0,
-                        width: 140.h,
-                        height: 140.h,
-                        selectedStepSize: 12,
-                        // roundedCap: (_, __) => true,
-                        child: Center(
-                          child: Text(
-                              "% ${UserDataCubit.instance.userDataEntity?.consumption ?? 0}",
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.w800,
-                              )
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedRadialGauge(
+                      duration: const Duration(seconds: 1),
+                      value: UserDataCubit.instance.userDataEntity?.flowRate?.toDouble() ??.5,
+                      // value:  0,
+                      curve: Curves.elasticOut,
+                      radius: 80,
+                      axis: GaugeAxis(
+                          min: 0,
+                          max: 1000,
+                          style: GaugeAxisStyle(
+                            thickness: 12,
+                            background: Theme.of(context).primaryColor,
+                            segmentSpacing: 4,
                           ),
-                        ),
+                          pointer: GaugePointer.needle(
+                            width: 20,
+                            height: 60,
+                            color: Theme.of(context).indicatorColor,
+                          ),
+                          progressBar: GaugeProgressBar.rounded(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          segments: const [
+                            GaugeSegment(
+                              from: 0,
+                              to: 250,
+                              color: Color(0xFFD9DEEB),
+                              cornerRadius: Radius.zero,
+                            ),
+                            GaugeSegment(
+                              from: 250,
+                              to: 500,
+                              color: Color(0xFFD9DEEB),
+                              cornerRadius: Radius.zero,
+                            ),
+                            GaugeSegment(
+                              from: 500,
+                              to: 750,
+                              color: Color(0xFFD9DEEB),
+                              cornerRadius: Radius.zero,
+                            ),
+                            GaugeSegment(
+                              from: 750,
+                              to: 1000,
+                              color: Color(0xFFD9DEEB),
+                              cornerRadius: Radius.zero,
+                            ),
+                          ]
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 24.h,),
+              InputDecorator(
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.translate('consumption'),
+                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 18.sp
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: .5.w, color: Colors.grey,),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                SizedBox(height: 18.h,),
-                ButtonWidget(
-                  title: AppLocalizations.of(context)!.translate('charts'),
-                  onTap: (){
-                    navigateToNamed(route: Routes.chartsScreen);
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularStepProgressIndicator(
+                      totalSteps: UserDataCubit.instance.userDataEntity?.limit ?? 100,
+                      currentStep: UserDataCubit.instance.userDataEntity?.consumption ?? 0,
+                      stepSize: 12,
+                      selectedColor: Theme.of(context).primaryColor,
+                      unselectedColor: Theme.of(context).disabledColor,
+                      padding: 0,
+                      width: 140.h,
+                      height: 140.h,
+                      selectedStepSize: 12,
+                      // roundedCap: (_, __) => true,
+                      child: Center(
+                        child: Text(
+                            "% ${UserDataCubit.instance.userDataEntity?.consumption ?? 0}",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w800,
+                            )
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 12.h,),
-              ],
-            ),
+              ),
+              SizedBox(height: 18.h,),
+              ButtonWidget(
+                title: AppLocalizations.of(context)!.translate('charts'),
+                onTap: (){
+                  navigateToNamed(route: Routes.chartsScreen);
+                },
+              ),
+              SizedBox(height: 12.h,),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 }
