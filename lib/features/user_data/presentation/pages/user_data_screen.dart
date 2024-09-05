@@ -246,8 +246,9 @@ class _UserDataScreenState extends State<UserDataScreen> {
                     SizedBox(height: 10.h,),
                     ItemForCard(
                       text: AppLocalizations.of(context)!.translate('status'),
-                      titleData: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status?.toString() : "",
+                      titleData: getStatus(),
                       leadingIcon: Icons.report_gmailerrorred_rounded,
+                      valueColor: UserDataCubit.instance.userDataEntity?.status != null ? UserDataCubit.instance.userDataEntity?.status == true ? Colors.green : Colors.red : Global.greyColor,
                     ),
                     SizedBox(height: 10.h,),
                     ListView.builder(
@@ -371,6 +372,46 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   ],
                 ),
               ),
+              SizedBox(height: 24.h,),
+              InputDecorator(
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.translate('totalMeters'),
+                  labelStyle: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      fontSize: 18.sp
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: .5.w, color: Colors.grey,),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularStepProgressIndicator(
+                      totalSteps: 100,
+                      currentStep: UserDataCubit.instance.userDataEntity?.limit ?? 0,
+                      stepSize: 12,
+                      selectedColor: Theme.of(context).primaryColor,
+                      unselectedColor: Theme.of(context).disabledColor,
+                      padding: 0,
+                      width: 140.h,
+                      height: 140.h,
+                      selectedStepSize: 12,
+                      // roundedCap: (_, __) => true,
+                      child: Center(
+                        child: Text(
+                          "% ${UserDataCubit.instance.userDataEntity?.limit ?? 0}",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w800,
+                          )
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: 18.h,),
               ButtonWidget(
                 title: AppLocalizations.of(context)!.translate('charts'),
@@ -385,4 +426,15 @@ class _UserDataScreenState extends State<UserDataScreen> {
       ),
     );
   }
+////////////////////////////////////////////////////////////////////////////////
+  getStatus(){
+    if(UserDataCubit.instance.userDataEntity?.status != null){
+      if(UserDataCubit.instance.userDataEntity?.status == true){
+        return AppLocalizations.of(context)!.translate('on');
+      }else{
+        return AppLocalizations.of(context)!.translate('off');
+      }
+    }
+  }
+////////////////////////////////////////////////////////////////////////////////
 }

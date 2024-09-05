@@ -11,8 +11,9 @@ class ItemForCard extends StatelessWidget{
   final String? titleData;
   final IconData? leadingIcon;
   final TextStyle? textStyle;
+  final Color valueColor;
 
-  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon, this.textStyle});
+  const ItemForCard({super.key, required this.text, required this.titleData, this.leadingIcon, this.textStyle, this.valueColor = Global.greyColor});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class ItemForCard extends StatelessWidget{
               textOverflow: TextOverflow.ellipsis,
               textStyle: TextStyle(
                   fontSize: 15.sp,
-                  color: Global.greyColor
+                  color: valueColor,
               )
             ),
           ],
