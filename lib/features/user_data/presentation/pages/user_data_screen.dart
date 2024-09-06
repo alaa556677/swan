@@ -412,13 +412,13 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 18.h,),
-              ButtonWidget(
-                title: AppLocalizations.of(context)!.translate('charts'),
-                onTap: (){
-                  navigateToNamed(route: Routes.chartsScreen);
-                },
-              ),
+              // SizedBox(height: 18.h,),
+              // ButtonWidget(
+              //   title: AppLocalizations.of(context)!.translate('charts'),
+              //   onTap: (){
+              //     navigateToNamed(route: Routes.chartsScreen);
+              //   },
+              // ),
               SizedBox(height: 12.h,),
             ],
           ),
