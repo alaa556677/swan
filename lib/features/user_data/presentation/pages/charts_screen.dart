@@ -17,6 +17,9 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import '../../../../core/app_constatnts/app_localization.dart';
 import '../../../../core/app_constatnts/global.dart';
+import '../../../../core/app_constatnts/navigate_methods.dart';
+import '../../../../core/app_constatnts/routes.dart';
+import '../../../../core/network/cache_helper.dart';
 import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/deafault_screen.dart';
 import '../../../../core/widgets/wave_widget.dart';
@@ -108,7 +111,15 @@ class _ChartsScreenState extends State<ChartsScreen> {
                                     }
                                   });
                                 },
-                              child: const Icon(Icons.language, color: Global.whiteColor,))
+                              child: const Icon(Icons.language, color: Global.whiteColor,)),
+                            SizedBox(width: 12.w,),
+                            InkWell(
+                                onTap: (){
+                                  CacheHelper.clearAllData();
+                                  navigateToAndRemoveNamed(route: Routes.login);
+                                },
+                                child: const Icon(Icons.logout, color: Global.whiteColor,)
+                            ),
                           ],
                         )
                       ],

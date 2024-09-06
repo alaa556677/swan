@@ -18,9 +18,9 @@ class UserRepoImp implements UserRepo {
   );
 ////////////////////////////////////////////////////////////////////////////////
   @override
-  Future<Either<Failure, UserDataEntity>> getUserData() async {
+  Future<Either<Failure, UserDataEntity>> getUserData(String id) async {
     try {
-      return Right(await userDataSource.getUserData());
+      return Right(await userDataSource.getUserData(id));
     } catch (e) {
     debugPrint('getUserData = $e');
     return Left(Failure(e.toString()));

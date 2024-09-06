@@ -27,6 +27,7 @@ class AuthCubit extends Cubit<AuthStates>{
       if (login.role == 'authenticated') {
         userModel = login.data;
         CacheHelper.saveData(key: Constants.token.toString(), value: login.data?.token);
+        CacheHelper.saveData(key: Constants.userID.toString(), value: login.data?.sId);
         DioHelper.init();
         emit(LoginSuccess(login));
       } else {

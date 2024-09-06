@@ -5,6 +5,6 @@ import '../entity/settings_entity.dart';
 import '../entity/user_data_entity.dart';
 
 abstract class UserRepo {
-  Future<Either<Failure, UserDataEntity>> getUserData();
+  Future<Either<Failure, UserDataEntity>> getUserData(String id);
   Future<Either<Failure, SettingsEntity>> getSettings();
 }

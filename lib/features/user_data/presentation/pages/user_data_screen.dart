@@ -41,7 +41,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
   }
 
   init() async {
-    await UserDataCubit.instance.getUserData();
+    await UserDataCubit.instance.getUserData(CacheHelper.getData(key: Constants.userID.toString()));
     await UserDataCubit.instance.getSettings();
   }
 
@@ -93,7 +93,8 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               onTap: (){
                                 themeNotifier.toggleTheme();
                               },
-                              child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)),
+                              child: const Icon(Icons.brightness_4_outlined, color: Global.whiteColor,)
+                            ),
                             SizedBox(width: 12.w,),
                             InkWell(
                               onTap: (){
@@ -119,7 +120,15 @@ class _UserDataScreenState extends State<UserDataScreen> {
                                   }
                                 });
                               },
-                              child: const Icon(Icons.language, color: Global.whiteColor,))
+                              child: const Icon(Icons.language, color: Global.whiteColor,)),
+                            SizedBox(width: 12.w,),
+                            InkWell(
+                                onTap: (){
+                                  CacheHelper.clearAllData();
+                                  navigateToAndRemoveNamed(route: Routes.login);
+                                },
+                                child: const Icon(Icons.logout, color: Global.whiteColor,)
+                            ),
                           ],
                         )
                       ],

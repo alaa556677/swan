@@ -7,8 +7,8 @@ import '../repo/user_repo.dart';
 class UserDataUseCase{
   final UserRepo userRepo;
   UserDataUseCase(this.userRepo);
-  Future<Either<Failure, UserDataEntity>> call() async {
-    return await userRepo.getUserData();
+  Future<Either<Failure, UserDataEntity>> call(String id) async {
+    return await userRepo.getUserData(id);
   }
 }
 

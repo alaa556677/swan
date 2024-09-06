@@ -29,9 +29,9 @@ class UserDataCubit extends Cubit<UserDataStates>{
   UserDataEntity? userDataEntity;
   List <Tax> tax = [];
   List<Charging> charging = [];
-  getUserData () async {
+  getUserData (String id) async {
     emit(GetUserDataLoading());
-    final result = await userDataUseCase.call();
+    final result = await userDataUseCase.call(id);
     result.fold((failure) => emit(GetUserDataFailure(failure.errorMessage)), (userData) {
       if (userData != null) {
         userDataEntity = userData;
