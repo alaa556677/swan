@@ -29,24 +29,30 @@ class ItemForCard extends StatelessWidget{
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextWidget(
-              text : text,
-              textStyle: themeNotifier.currentTheme == ThemeMode.light ? TextStyle(
-                fontSize: 15.sp,
-                color: Global.blackColor
-              ): TextStyle(
-                  fontSize: 15.sp,
-                  color: Global.whiteColor
-              )
+            SizedBox(
+              width: 50.w,
+              child: TextWidget(
+                text : text,
+                textStyle: themeNotifier.currentTheme == ThemeMode.light ? TextStyle(
+                    fontSize: 15.sp,
+                    color: Global.blackColor
+                ): TextStyle(
+                    fontSize: 15.sp,
+                    color: Global.whiteColor
+                )
+              ),
             ),
-            TextWidget(
-              text : titleData ?? "",
-              maxLines: 1,
-              textOverflow: TextOverflow.ellipsis,
-              textStyle: TextStyle(
+            SizedBox(width: 6.w),
+            Expanded(
+              child :TextWidget(
+                text : titleData ?? "",
+                maxLines: 1,
+                textOverflow: TextOverflow.ellipsis,
+                textStyle: TextStyle(
                   fontSize: 15.sp,
                   color: valueColor,
-              )
+                )
+              ),
             ),
           ],
         ),
