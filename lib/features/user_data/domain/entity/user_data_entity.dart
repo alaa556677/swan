@@ -19,7 +19,7 @@ class UserDataEntity extends Equatable{
 
   dynamic userName;
   dynamic email;
-  int? consumption;
+  double? consumption;
   int? flowRate;
   int? limit;
   int? mobile;

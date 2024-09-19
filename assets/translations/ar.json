@@ -20,5 +20,8 @@
   "instagram" : "انستجرام",
   "whats" : "واتس",
   "moneyCharging" : "قيمة الشحن",
-  "backToLogin" : "الرجوع الى صفحة الدخول"
+  "backToLogin" : "الرجوع الى صفحة الدخول",
+  "dialogQuestion" : "هل تريد الخروج؟",
+  "yes" : "نعم",
+  "no" : "لا"
 }

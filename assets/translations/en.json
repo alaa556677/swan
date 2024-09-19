@@ -20,5 +20,8 @@
   "instagram" : "Insta",
   "whats" : "Whats",
   "moneyCharging" : "Money Charging",
-  "backToLogin" : "Back to login"
+  "backToLogin" : "Back to login",
+  "dialogQuestion" : "Do you want to logOut?",
+  "yes" : "Yes",
+  "no" : "No"
 }

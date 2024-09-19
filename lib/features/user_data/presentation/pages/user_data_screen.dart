@@ -19,6 +19,8 @@ import '../../../../core/app_constatnts/app_localization.dart';
 import '../../../../core/app_constatnts/home_model.dart';
 import '../../../../core/styles/theme/change_notifier.dart';
 import '../../../../core/widgets/button_widget.dart';
+import '../../../../core/widgets/custom_dialog.dart';
+import '../../../../core/widgets/text_widget.dart';
 import '../../../../core/widgets/wave_widget.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_states.dart';
@@ -51,7 +53,12 @@ class _UserDataScreenState extends State<UserDataScreen> {
     final bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     return BlocConsumer<UserDataCubit, UserDataStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is GetSettingsFailure || state is GetUserDataFailure){
+          navigateToAndRemoveNamed(route: Routes.login);
+          customShowSnackBar(isError: true, message: "Please login again");
+        }
+      },
       builder: (context, state) {
         return DefaultScreen(
           closeAppBar: true,
@@ -123,11 +130,13 @@ class _UserDataScreenState extends State<UserDataScreen> {
                               child: const Icon(Icons.language, color: Global.whiteColor,)),
                             SizedBox(width: 12.w,),
                             InkWell(
-                                onTap: (){
-                                  CacheHelper.clearAllData();
-                                  navigateToAndRemoveNamed(route: Routes.login);
-                                },
-                                child: const Icon(Icons.logout, color: Global.whiteColor,)
+                              onTap: (){
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => const CustomDialog()
+                                );
+                              },
+                              child: const Icon(Icons.logout, color: Global.whiteColor,)
                             ),
                           ],
                         )
@@ -141,7 +150,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   children: [
                     state is GetSettingsLoading || state is GetUserDataLoading ? const Center(child: CircularProgressIndicator(),)
                         : state is GetSettingsFailure || state is GetSettingsError || state is GetUserDataError || state is GetUserDataFailure
-                    ? const NetworkFailedScreen() : getNetworkFailed(state)
+                    ? const NetworkFailedScreen() : getBodyWidget(state)
                   ],
                 ),
               ),
@@ -188,6 +197,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
       },
     );
   }
+
 ////////////////////////////////////////////////////////////////////////////////
   void launchURL(String urlPath) async {
     try{
@@ -199,7 +209,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
     }
   }
 ////////////////////////////////////////////////////////////////////////////////
-  getNetworkFailed(UserDataStates state){
+  getBodyWidget(UserDataStates state){
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -358,7 +368,7 @@ class _UserDataScreenState extends State<UserDataScreen> {
                   children: [
                     CircularStepProgressIndicator(
                       totalSteps: UserDataCubit.instance.userDataEntity?.limit ?? 100,
-                      currentStep: UserDataCubit.instance.userDataEntity?.consumption ?? 0,
+                      currentStep: UserDataCubit.instance.userDataEntity?.consumption?.toInt() ?? 0,
                       stepSize: 12,
                       selectedColor: Theme.of(context).primaryColor,
                       unselectedColor: Theme.of(context).disabledColor,

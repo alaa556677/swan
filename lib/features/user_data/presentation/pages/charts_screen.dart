@@ -21,6 +21,7 @@ import '../../../../core/app_constatnts/navigate_methods.dart';
 import '../../../../core/app_constatnts/routes.dart';
 import '../../../../core/network/cache_helper.dart';
 import '../../../../core/styles/theme/change_notifier.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 import '../../../../core/widgets/deafault_screen.dart';
 import '../../../../core/widgets/wave_widget.dart';
 import '../cubit/user_cubit.dart';
@@ -115,8 +116,10 @@ class _ChartsScreenState extends State<ChartsScreen> {
                             SizedBox(width: 12.w,),
                             InkWell(
                                 onTap: (){
-                                  CacheHelper.clearAllData();
-                                  navigateToAndRemoveNamed(route: Routes.login);
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => const CustomDialog()
+                                  );
                                 },
                                 child: const Icon(Icons.logout, color: Global.whiteColor,)
                             ),

@@ -63,7 +63,7 @@ class UserData extends UserDataEntity{
 }
 
 class Tax {
-  int? value;
+  dynamic value;
   dynamic reason;
   dynamic sId;
   dynamic createdAt;
@@ -91,7 +91,7 @@ class Tax {
 }
 
 class Charging {
-  int? money;
+  dynamic money;
   dynamic sId;
   dynamic createdAt;
   dynamic updatedAt;
